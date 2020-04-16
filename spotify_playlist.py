@@ -3,6 +3,7 @@ import requests
 import spotipy
 import spotipy.util as util
 import json
+import random
 
 username = '1167152572'
 scope = 'playlist-modify-public'
@@ -43,14 +44,13 @@ json_response = response1.json()
 
 genre2 = input('Choose a genre between rock, disco, electronic, funk, rockabilly: ')
 
-query2 = '{}limit={}&seed_genres={}&target_danceability={}&target_popularity={}&locale={}&country={}'.format(
+query2 = '{}limit={}&seed_genres={}&target_danceability={}&target_popularity={}&market={}'.format(
     endpoint_url,
     limit,
     genre2,
     target_danceability,
     target_popularity,
-    locale,
-    country)
+    market)
 
 response2 = requests.get(query2,
                         headers = {'Content-Type':'application/json',
@@ -60,14 +60,13 @@ json_response2 = response2.json()
 
 genre3 = input('Choose a genre between blues, funk, groove, hip-hop, rock-n-roll ')
 
-query3 = '{}limit={}&seed_genres={}&target_danceability={}&target_popularity={}&locale={}&country={}'.format(
+query3 = '{}limit={}&seed_genres={}&target_danceability={}&target_popularity={}&market={}'.format(
     endpoint_url,
     limit,
     genre3,
     target_danceability,
     target_popularity,
-    locale,
-    country)
+    market,)
 
 response3 = requests.get(query3,
                         headers = {'Content-Type':'application/json',
@@ -88,6 +87,8 @@ for i,j in enumerate (json_response3['tracks']):
     uris1.append(j['uri'])
     print('{})\"{}\" by \"{}\"'.format(i+9, j['name'],j['artists'][0]['name']))
 
+# Randomly shuffle the order of elements in uris1
+random.shuffle(uris1)
 
 #create a playlist
 
