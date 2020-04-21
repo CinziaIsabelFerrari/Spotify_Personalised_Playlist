@@ -22,11 +22,6 @@ sp = spotipy.Spotify(auth=token)
 #    offset=[40]
 #)
 
-
-#recommendation_genre_seeds()
-#target_instrumentalness=[0.95], #if want instrumental
-#max_speechiness=[0.03], #if want instrumental
-
 #optional - make a loop to repeat this process and try to get more random tracks? Offset somehow?
 
 date = strftime("%d of %B", gmtime())
@@ -43,8 +38,8 @@ elif speediness == 'slow':
     energy = 0.05
 else:
     tempo = random.randint(100,200)
-    valence = random.uniform(0.5,1.0)
-    energy = random.uniform(0.5,1.0)
+    valence = random.uniform(0.2,1.0)
+    energy = random.uniform(0.2,1.0)
 
 
 find_songs = sp.recommendations(
