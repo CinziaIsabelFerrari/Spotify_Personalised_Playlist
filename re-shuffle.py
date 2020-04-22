@@ -5,7 +5,7 @@ import spotipy.util as util
 import json
 import random
 from time import gmtime, strftime
-
+# from re import group
 
 
 username = '1167152572'
@@ -32,9 +32,9 @@ def my_top_artists(sp):
     top_artists_name = []
     top_artists_uri = []
 
-    ranges = ['short_term', 'medium_term'] #(you can add also long_term)
+    ranges = ['short_term', 'medium_term','long_term'] #(you can add also long_term)
     for r in ranges:
-        all_top_artists = sp.current_user_top_artists(limit=100, time_range= r)
+        all_top_artists = sp.current_user_top_artists(limit=150, time_range= r)
         top_artists_data = all_top_artists['items']
         for artist_data in top_artists_data:
             if artist_data['name'] not in top_artists_name:
@@ -56,53 +56,59 @@ def my_top_artists_top_10songs(sp, top_artists_uri):
     return top_10tracks_uri
 
 
+
+top_artists_uri = my_top_artists(sp)
+
+top_10tracks_uri = my_top_artists_top_10songs(sp, top_artists_uri)
+
 #Now from these top tracks, we select the ones we want based on the mood
 
 
-def choose_tracks(sp, top_10tracks_uri):
-    mood = input('I\'m ready! How do you feel today? Sloth, Quokka, Cheetaah or just curious?')
-    print('Okay! Picking your tracks...')
-    selected_tracks_uri = []
-    selected_tracks_name = []
+#def choose_tracks(sp, top_10tracks_uri):
 
-    random.shuffle(top_10tracks_uri)
+mood = input('I\'m ready! How do you feel today? Sloth, Quokka, Cheetah or just curious?')
+print('Okay! Picking your tracks...')
 
-    for tracks in list(top_10tracks_uri): #group(top_10tracks_uri,50) check this
-        selected_tracks_data = sp.audio_features(tracks)
-        for track_data in selected_tracks_data:
-            try:
-                if mood == 'sloth':
-                    if  (0 <= track_data['valence'] <= 0.2
-                    and track_data['danceability'] <= 0.2
-                    and track_data['energy'] <= 0.2
-                    and track_data['tempo'] <= 70):
-                        selected_tracks_uri.append(track_data['uri'])
-                        selected_tracks_name.append(track_data['tracks'])
-                elif mood == 'quokka':
-                    if  (0.4 <= track_data['valence'] <= 0.6
-                    and 0.4 <= track_data['danceability'] <= 0.6
-                    and 0.4 <= track_data['energy'] <= 0.6
-                    and 100<= track_data['tempo'] <= 150):
-                        selected_tracks_uri.append(track_data['uri'])
-                        selected_tracks_name.append(track_data['tracks'])
-                elif mood == 'cheetaah':
-                    if (0.9 <= track_data['valence'] <= 1
-                    and track_data['danceability'] >= 0.9
-                    and track_data['energy'] >= 0.9
-                    and track_data['tempo'] >= 170):
-                        selected_tracks_uri.append(track_data['uri'])
-                        selected_tracks_name.append(track_data['tracks'])
-                else:
-                    if  (track_data['tempo'] == random.randint(100, 200)
-                    and track_data['valence'] == random.uniform(0.2, 1.0)
-                    and track_data['energy'] == random.uniform(0.2, 1.0)
-                    and track_data['danceability'] == random.uniform(0.2, 1.0)):
-                        selected_tracks_uri.append(track_data['uri'])
-                        selected_tracks_name.append(track_data['tracks'])
-            except TypeError as te:
-                continue
-    return selected_tracks_uri
-    return selected_tracks_name
+selected_tracks_uri = []
+
+random.shuffle(top_10tracks_uri)
+
+for tracks in top_10tracks_uri: #group(top_10tracks_uri,50) check this
+    selected_tracks_data = sp.audio_features(tracks)
+    for track_data in selected_tracks_data:
+        try:
+            if mood.lower() == 'sloth':
+                if  (0 <= track_data['valence'] <= 0.3
+                #and track_data['danceability'] <= 0.2
+                and track_data['energy'] <= 0.3
+                and track_data['tempo'] <= 100):
+                    selected_tracks_uri.append(track_data['uri'])
+            elif mood.lower() == 'quokka':
+                if  (0.4 <= track_data['valence'] <= 0.7
+                #and 0.4 <= track_data['danceability'] <= 0.6
+                and 0.4 <= track_data['energy'] <= 0.7
+                and 100<= track_data['tempo'] <= 170):
+                    selected_tracks_uri.append(track_data['uri'])
+            elif mood.lower() == 'cheetah':
+                if (0.7 <= track_data['valence'] <= 1
+                #and track_data['danceability'] >= 0.
+                and track_data['energy'] >= 0.8
+                and track_data['tempo'] >= 170):
+                    selected_tracks_uri.append(track_data['uri'])
+            else:
+                if  (track_data['tempo'] == random.randint(100, 200)
+                and track_data['valence'] == random.uniform(0.2, 1.0)
+                and track_data['energy'] == random.uniform(0.2, 1.0)):
+                #and track_data['danceability'] == random.uniform(0.2, 1.0)):
+                    selected_tracks_uri.append(track_data['uri'])
+        except TypeError as te:
+            continue
+
+print('I found {} tracks out of {} for you!'.format(len(selected_tracks_uri), len(top_10tracks_uri)))
+
+# for i, j in enumerate(selected_tracks_name):
+#     print('{})\"{}\" by \"{}\"'.format(i + 1, j['name'], j['artists'][0]['name']))
+#     #return selected_tracks_uri
 
 #def create_playlist(sp, selected_tracks_uri):
 #    playlist_name = 'Today\'s mood'
@@ -112,24 +118,19 @@ def choose_tracks(sp, top_10tracks_uri):
 #
 #    random.shuffle(selected_tracks_uri)
 #    sp.user_playlist_add_tracks(username, playlist_id, selected_tracks_uri[1:20])
-#
-#   return playlist_new['external_urls']['spotify']
 
 
 
+#selected_tracks_uri = choose_tracks(sp, top_10tracks_uri)
 
-
-
-top_artists_uri = my_top_artists(sp)
-
-top_10tracks_uri = my_top_artists_top_10songs(sp, top_artists_uri)
-
-selected_tracks_uri = choose_tracks(sp, top_10tracks_uri)
 
 playlist_name = 'Today\'s mood!'
 
 playlist_new = sp.user_playlist_create(username, playlist_name, public=True, description='Enjoy!')
-add_songs = sp.user_playlist_add_tracks(username, playlist_new['id'], selected_tracks_uri, position=None)
+
+print(selected_tracks_uri)
+
+add_songs = sp.user_playlist_add_tracks(username, playlist_new['id'], selected_tracks_uri)
 
 url = playlist_new['external_urls']['spotify']
 
