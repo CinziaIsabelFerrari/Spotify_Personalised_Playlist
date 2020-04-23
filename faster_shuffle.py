@@ -8,9 +8,13 @@ from time import gmtime, strftime
 
 username = '1167152572'
 scope = 'user-library-read user-top-read playlist-modify-public user-follow-read'
+playlist_id = '68nKOVilBQjrePQ0gF9xc2'
+playlist_url = 'https://open.spotify.com/playlist/68nKOVilBQjrePQ0gF9xc2'
+
 token = util.prompt_for_user_token(username, scope)
 
 sp = spotipy.Spotify(auth=token)
+
 
 #Finding my top artists 100
 
@@ -49,6 +53,8 @@ def my_top_artists_top_10songs(sp, top_artists_uri):
 top_artists_uri = my_top_artists(sp)
 
 top_10tracks_uri = my_top_artists_top_10songs(sp, top_artists_uri)
+
+# Maybe I can also add these --> current_user_recently_played(limit=50, after=None, before=None)
 
 #Now from these top tracks, I get some random to use as seed
 
@@ -120,15 +126,20 @@ audio_f = sp.audio_features(track_ids)
 print(audio_f)
 
 
-playlist_name = 'Today\'s mood!'
+#playlist_name = 'Embrace your mood and dance with it!'
 
-playlist_new = sp.user_playlist_create(username, playlist_name, public=True, description='Enjoy!')
+#playlist_new = sp.user_playlist_create(username, playlist_name, public=True, description='save at least one new song!')
 
 print(selected_tracks_uri)
 
-add_songs = sp.user_playlist_add_tracks(username, playlist_new['id'], track_ids)
+#add_songs = sp.user_playlist_add_tracks(username, playlist_id, track_ids)
+# in this way I am rewriting on the already made playlist
 
-url = playlist_new['external_urls']['spotify']
+add_songs = sp.user_playlist_replace_tracks(username, playlist_id, track_ids)
 
-print('Your playlist is ready at {}'.format(url))
+#url = playlist_new['external_urls']['spotify']
+
+print('Your playlist is ready at {}'.format(playlist_url))
+
+
 
