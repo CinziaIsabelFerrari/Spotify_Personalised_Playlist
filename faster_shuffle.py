@@ -15,7 +15,6 @@ token = util.prompt_for_user_token(username, scope)
 
 sp = spotipy.Spotify(auth=token)
 
-
 #Finding my top artists 100
 
 #short term range means 4 weeks, medium is 6 months and long-term is of all time
@@ -133,8 +132,8 @@ print(audio_f)
 print(selected_tracks_uri)
 
 #add_songs = sp.user_playlist_add_tracks(username, playlist_id, track_ids)
-# in this way I am rewriting on the already made playlist
 
+# in this way I am rewriting on the already made playlist
 add_songs = sp.user_playlist_replace_tracks(username, playlist_id, track_ids)
 
 #url = playlist_new['external_urls']['spotify']
