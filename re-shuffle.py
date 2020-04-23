@@ -73,38 +73,83 @@ selected_tracks_uri = []
 
 random.shuffle(top_10tracks_uri)
 
-for tracks in top_10tracks_uri: #group(top_10tracks_uri,50) check this
-    selected_tracks_data = sp.audio_features(tracks)
-    for track_data in selected_tracks_data:
-        try:
-            if mood.lower() == 'sloth':
-                if  (0 <= track_data['valence'] <= 0.3
-                #and track_data['danceability'] <= 0.2
-                and track_data['energy'] <= 0.3
-                and track_data['tempo'] <= 100):
-                    selected_tracks_uri.append(track_data['uri'])
-            elif mood.lower() == 'quokka':
-                if  (0.4 <= track_data['valence'] <= 0.7
-                #and 0.4 <= track_data['danceability'] <= 0.6
-                and 0.4 <= track_data['energy'] <= 0.7
-                and 100<= track_data['tempo'] <= 170):
-                    selected_tracks_uri.append(track_data['uri'])
-            elif mood.lower() == 'cheetah':
-                if (0.7 <= track_data['valence'] <= 1
-                #and track_data['danceability'] >= 0.
-                and track_data['energy'] >= 0.8
-                and track_data['tempo'] >= 170):
-                    selected_tracks_uri.append(track_data['uri'])
-            else:
-                if  (track_data['tempo'] == random.randint(100, 200)
-                and track_data['valence'] == random.uniform(0.2, 1.0)
-                and track_data['energy'] == random.uniform(0.2, 1.0)):
-                #and track_data['danceability'] == random.uniform(0.2, 1.0)):
-                    selected_tracks_uri.append(track_data['uri'])
-        except TypeError as te:
-            continue
+if mood.lower() not in ['sloth', 'quokka', 'cheetah']:
+    tracks_subset = random.sample(top_10tracks_uri, 100)
+    for tracks in tracks_subset:
+        track_data = sp.audio_features(tracks)[0]
+        selected_tracks_uri.append(track_data['uri'])
+
+else:
+
+    if mood.lower() == 'sloth':
+        val_min, val_max = 0, 0.3
+        ene_min, ene_max = 0, 0.3
+        tem_min, tem_max = 0, 140
+        tem_target = 100
+
+    elif mood.lower() == 'quokka':
+        val_min, val_max = 0.4, 0.7
+        ene_min, ene_max = 0.4, 0.6
+        tem_min, tem_max = 110, 170
+        tem_target = 140
+
+    elif mood.lower() == 'cheetah':
+        val_min, val_max = 0.7, 1.0
+        ene_min, ene_max = 0.7, 1.0
+        tem_min, tem_max = 160, 230
+        tem_target = 180
+
+    for tracks in top_10tracks_uri: #group(top_10tracks_uri,50) check this
+        track_data = sp.audio_features(tracks)[0]
+
+        if (val_min <= track_data['valence'] <= val_max
+            and ene_min <= track_data['energy'] <= ene_max
+            and tem_min <= track_data['tempo'] <= tem_max):
+            selected_tracks_uri.append(track_data['uri'])
+
+
+
+        # if mood.lower() == 'sloth':
+        #     if (0 <= track_data['valence'] <= 0.3
+        #             # and track_data['danceability'] <= 0.2
+        #             and track_data['energy'] <= 0.3
+        #             and track_data['tempo'] <= 140):
+        #         selected_tracks_uri.append(track_data['uri'])
+        # elif mood.lower() == 'quokka':
+        #     if (0.4 <= track_data['valence'] <= 0.7
+        #             # and 0.4 <= track_data['danceability'] <= 0.6
+        #             and 0.4 <= track_data['energy'] <= 0.6
+        #             and 100 <= track_data['tempo'] <= 170):
+        #         selected_tracks_uri.append(track_data['uri'])
+        # elif mood.lower() == 'cheetah':
+        #     if (0.7 <= track_data['valence'] <= 1
+        #             # and track_data['danceability'] >= 0.
+        #             and track_data['energy'] >= 0.7
+        #             and track_data['tempo'] >= 140):
+        #         selected_tracks_uri.append(track_data['uri'])
 
 print('I found {} tracks out of {} for you!'.format(len(selected_tracks_uri), len(top_10tracks_uri)))
+
+random_seeds_tracks = random.sample(selected_tracks_uri, 2)
+
+find_new_songs = sp.recommendations(
+    seed_tracks= random_seeds_tracks,
+    limit=[20],
+    #target_danceability=[0.8],
+    min_valence=val_min,
+    max_valence=val_max,
+    #target_energy=[energy],
+    target_tempo = tem_target,
+    # max_popularity = [20]
+    )
+
+track_ids = []
+for i, j in enumerate(find_new_songs['tracks']):
+    track_ids.append(j['id'])
+    print('{})\"{}\" by \"{}\"'.format(i + 1, j['name'], j['artists'][0]['name']))
+
+audio_f = sp.audio_features(track_ids)
+print(audio_f)
 
 # for i, j in enumerate(selected_tracks_name):
 #     print('{})\"{}\" by \"{}\"'.format(i + 1, j['name'], j['artists'][0]['name']))
@@ -130,7 +175,7 @@ playlist_new = sp.user_playlist_create(username, playlist_name, public=True, des
 
 print(selected_tracks_uri)
 
-add_songs = sp.user_playlist_add_tracks(username, playlist_new['id'], selected_tracks_uri)
+add_songs = sp.user_playlist_add_tracks(username, playlist_new['id'], track_ids)
 
 url = playlist_new['external_urls']['spotify']
 
