@@ -5,15 +5,20 @@ import spotipy.util as util
 import json
 import random
 from time import gmtime, strftime
+import os
 
 username = '1167152572'
-scope = 'user-library-read user-top-read playlist-modify-public user-follow-read'
-playlist_id = '68nKOVilBQjrePQ0gF9xc2'
-playlist_url = 'https://open.spotify.com/playlist/68nKOVilBQjrePQ0gF9xc2'
+scope = 'user-library-read user-top-read playlist-modify-public user-follow-read playlist-read-private playlist-modify-private'
+playlist_id = '1o4dtzeLcupqgKpjqLZyvm'
+playlist_url = 'https://open.spotify.com/playlist/1o4dtzeLcupqgKpjqLZyvm'
 
 token = util.prompt_for_user_token(username, scope)
 
+#token='BQDUnrbo1wucrP1MUYDjSgf_MDcjZMECA4I1orGFLxllYjRY09oID7QdEKnjN2xye2BqNoHh8gaUrA6Mqc3kTpdUBSMDzrwM33HnkIYRfiuc6T4v-czI4Zp9z85nlpZJNUvwFBN5pN73mE6rrgk8xEE-bWO4PKTp2mI-UvndH7twO-jdcoLosvtLft1LAwFBZc_3b7uWuiH54Rt-MKhR__O3-lD2hek'
+
 sp = spotipy.Spotify(auth=token)
+
+
 
 #Finding my top artists 100
 
@@ -71,13 +76,10 @@ mood = input('I\'m ready! How do you feel today? Sloth, Quokka, Cheetah or just 
 print('Okay! Picking your tracks...')
 
 if mood.lower() not in ['sloth', 'quokka', 'cheetah']:
-    quest = input('Do you want to browse within your top artists or something new?(top/new)')
-
-    if quest == 'top':
-        tracks_subset = random.sample(top_10tracks_uri, 20)
-        for tracks in tracks_subset:
-            track_data = sp.audio_features(tracks)[0]
-            track_ids.append(track_data['uri'])
+    tracks_subset = random.sample(top_10tracks_uri, 20)
+    for tracks in tracks_subset:
+        track_data = sp.audio_features(tracks)[0]
+        track_ids.append(track_data['uri'])
 
     else:
         val_min, val_max = 0, 1.0
@@ -104,7 +106,6 @@ else:
         tem_min, tem_max = 160, 230
         tem_target = 180
 
-
 find_new_songs = sp.recommendations(
     seed_tracks= random_seeds_tracks,
     limit=[20],
@@ -129,9 +130,8 @@ print(audio_f)
 
 #playlist_new = sp.user_playlist_create(username, playlist_name, public=True, description='save at least one new song!')
 
-print(selected_tracks_uri)
 
-#add_songs = sp.user_playlist_add_tracks(username, playlist_id, track_ids)
+#add_songs = sp.user_playlist_add_tracks(username, playlist_new['id'], track_ids)
 
 # in this way I am rewriting on the already made playlist
 add_songs = sp.user_playlist_replace_tracks(username, playlist_id, track_ids)
