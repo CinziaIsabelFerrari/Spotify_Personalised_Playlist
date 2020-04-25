@@ -2,7 +2,6 @@ import spotipy
 import spotipy.util as util
 import random
 
-
 #Defining users and authorization codes
 
 username = '1167152572'
