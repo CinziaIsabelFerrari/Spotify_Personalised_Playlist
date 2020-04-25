@@ -1,10 +1,9 @@
-import sys
-import requests
 import spotipy
 import spotipy.util as util
-import json
 import random
-from time import gmtime, strftime
+
+
+#Defining users and authorization codes
 
 username = '1167152572'
 username_j = 'joselusko'
@@ -13,15 +12,17 @@ scope = 'user-library-read user-top-read playlist-modify-public user-follow-read
 token = util.prompt_for_user_token(username, scope)
 token_j = util.prompt_for_user_token(username_j, scope)
 
+sp = spotipy.Spotify(auth=token)
+sp_j = spotipy.Spotify(auth=token_j)
+
+#I already created a playlist so to avoid to create a new one all the time I will rewrite on this one
+
 playlist_id = '3Uvw17LxK0xgJUiiGEebZE'
 playlist_url = 'https://open.spotify.com/playlist/3Uvw17LxK0xgJUiiGEebZE'
 
 
-sp = spotipy.Spotify(auth=token)
-sp_j = spotipy.Spotify(auth=token_j)
 
-
-#Finding my top artists 100
+#Finding top artists 100, mine and Jose's
 
 #short term range means 4 weeks, medium is 6 months and long-term is of all time
 
@@ -58,7 +59,7 @@ def j_top_artists(sp_j):
     return top_artists_uri_j
 
 
-#Now I'm getting the top 10 songs
+#Now I'm getting the top 10 songs for each of these artists selected
 
 def my_top_artists_top_10songs(sp, top_artists_uri_c):
     print('..I\'m looking into CinCin\'s songs')
@@ -81,6 +82,8 @@ def j_top_artists_top_10songs(sp_j, top_artists_uri_j):
     return top_10tracks_uri_j
 
 
+#Now I am calling the functions and shuffling the results
+
 top_artists_uri_c = my_top_artists(sp)
 
 top_10tracks_uri_c = my_top_artists_top_10songs(sp, top_artists_uri_c)
@@ -94,7 +97,7 @@ top_10tracks_uri_j = j_top_artists_top_10songs(sp_j, top_artists_uri_j)
 random.shuffle(top_10tracks_uri_c)
 random.shuffle(top_10tracks_uri_j)
 
-#getting 3 random tracks from Cin and 3 from Jose to use as seeds
+#getting 3 random tracks from Cin and 3 from Jose to use as seeds to create the final playlist
 
 random_selected_c = random.sample(top_10tracks_uri_c, 2)
 random_selected_j = random.sample(top_10tracks_uri_j, 2)
@@ -105,7 +108,7 @@ random.shuffle(top_10tracks_uri)
 
 random_seeds_tracks = top_10tracks_uri
 
-#Using these as seed I will get a playlist based on the mood
+#These 6 tracks will be seeds to find new tracks, and based on the mood I will select specific parameters for the tracks
 
 track_ids = []
 
@@ -149,6 +152,9 @@ find_new_songs = sp.recommendations(
     # max_popularity = [20]
     )
 
+
+# Here I am printing the name of the songs that will appear in the playlist and the audio features to check that the parameters have been followed correctly
+
 for i, j in enumerate(find_new_songs['tracks']):
     track_ids.append(j['id'])
     print('{})\"{}\" by \"{}\"'.format(i + 1, j['name'], j['artists'][0]['name']))
@@ -156,16 +162,17 @@ for i, j in enumerate(find_new_songs['tracks']):
 audio_f = sp.audio_features(track_ids)
 print(audio_f)
 
-#playlist_name = 'Embrace your mood and dance with it! - Family edition'
-
-#playlist_new = sp.user_playlist_create(username, playlist_name, public=True)
-
-#add_songs= sp.user_playlist_add_tracks(username, playlist_new['id'], track_ids)
-
 # in this way I am rewriting on the already made playlist
-
 add_songs = sp.user_playlist_replace_tracks(username, playlist_id, track_ids)
 
+
+#If I want to create a new playlist I can use these again:
+
+#playlist_name = 'Embrace your mood and dance with it! - Family edition'
+#playlist_new = sp.user_playlist_create(username, playlist_name, public=True)
+#add_songs= sp.user_playlist_add_tracks(username, playlist_new['id'], track_ids)
 #url = playlist_new['external_urls']['spotify']
+
+
 
 print('Your playlist is ready at {}'.format(playlist_url))
