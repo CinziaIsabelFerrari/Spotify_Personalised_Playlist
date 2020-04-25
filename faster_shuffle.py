@@ -1,11 +1,7 @@
-import sys
-import requests
 import spotipy
 import spotipy.util as util
-import json
 import random
-from time import gmtime, strftime
-import os
+
 
 username = '1167152572'
 scope = 'user-library-read user-top-read playlist-modify-public user-follow-read playlist-read-private playlist-modify-private'
@@ -13,8 +9,6 @@ playlist_id = '1o4dtzeLcupqgKpjqLZyvm'
 playlist_url = 'https://open.spotify.com/playlist/1o4dtzeLcupqgKpjqLZyvm'
 
 token = util.prompt_for_user_token(username, scope)
-
-#token='BQDUnrbo1wucrP1MUYDjSgf_MDcjZMECA4I1orGFLxllYjRY09oID7QdEKnjN2xye2BqNoHh8gaUrA6Mqc3kTpdUBSMDzrwM33HnkIYRfiuc6T4v-czI4Zp9z85nlpZJNUvwFBN5pN73mE6rrgk8xEE-bWO4PKTp2mI-UvndH7twO-jdcoLosvtLft1LAwFBZc_3b7uWuiH54Rt-MKhR__O3-lD2hek'
 
 sp = spotipy.Spotify(auth=token)
 
@@ -62,8 +56,6 @@ top_10tracks_uri = my_top_artists_top_10songs(sp, top_artists_uri)
 
 #Now from these top tracks, I get some random to use as seed
 
-selected_tracks_uri = []
-
 random.shuffle(top_10tracks_uri)
 
 random_seeds_tracks = random.sample(top_10tracks_uri, 5)
@@ -109,7 +101,6 @@ else:
 find_new_songs = sp.recommendations(
     seed_tracks= random_seeds_tracks,
     limit=[20],
-    #target_danceability=[0.8],
     min_valence=val_min,
     max_valence=val_max,
     min_energy=ene_min,
@@ -139,6 +130,3 @@ add_songs = sp.user_playlist_replace_tracks(username, playlist_id, track_ids)
 #url = playlist_new['external_urls']['spotify']
 
 print('Your playlist is ready at {}'.format(playlist_url))
-
-
-
