@@ -1,9 +1,5 @@
-import sys
-import requests
 import spotipy
 import spotipy.util as util
-import json
-import random
 from time import gmtime, strftime
 
 
@@ -14,44 +10,39 @@ token = util.prompt_for_user_token(username, scope)
 
 sp = spotipy.Spotify(auth=token)
 
-
-#define_language = sp.featured_playlists(
-#    locale=['es_ES'],
-#    country=['ES'],
-#    limit=[1],
-#    offset=[40]
-#)
-
-#optional - make a loop to repeat this process and try to get more random tracks? Offset somehow?
-
 date = strftime("%d of %B", gmtime())
 genre_choice = input ('Which kind of music would you like to listen to?')
 speediness = input ('Do you feel energetic, slow or mixed today?')
 
-if speediness == 'energetic':
-    tempo = 190
-    valence = 1.0
-    energy = 1.0
-elif speediness == 'slow':
-    tempo = 70
-    valence = 0.05
-    energy = 0.05
+if speediness.lower() not in ['energetic', 'slow']:
+    val_min, val_max = 0, 1.0
+    ene_min, ene_max = 0, 1.0
+    tem_target = None
+
 else:
-    tempo = random.randint(100,200)
-    valence = random.uniform(0.2,1.0)
-    energy = random.uniform(0.2,1.0)
+
+    if speediness.lower() == 'slow':
+        val_min, val_max = 0, 0.3
+        ene_min, ene_max = 0, 0.3
+        tem_target = 100
+
+    elif speediness.lower() == 'energetic':
+        val_min, val_max = 0.5, 0.8
+        ene_min, ene_max = 0.5, 0.8
+        tem_target = 150
+
 
 
 find_songs = sp.recommendations(
     seed_genres= [genre_choice],
     limit=[20],
-    target_danceability=[0.8],
-    target_valence=[valence],
-    target_energy=[energy],
-    target_tempo = [tempo],
+    min_valence=val_min,
+    max_valence=val_max,
+    min_energy=ene_min,
+    max_energy=ene_max,
+    target_tempo = tem_target,
     max_popularity = [20]
     )
-
 
 track_ids = []
 for i, j in enumerate(find_songs['tracks']):
