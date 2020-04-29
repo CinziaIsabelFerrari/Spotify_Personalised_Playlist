@@ -2,6 +2,32 @@ import spotipy
 import spotipy.util as util
 import random
 
+
+def get_top_artists(sp_auth):
+    top_artists_name = []
+    top_artists_uri = []
+
+    ranges = ['short_term', 'medium_term'] #short term range means 4 weeks, medium is 6 months and long-term is of all time
+    for r in ranges:
+        all_top_artists = sp_auth.current_user_top_artists(limit=100, time_range= r)
+        top_artists_data = all_top_artists['items']
+        for artist_data in top_artists_data:
+            if artist_data['name'] not in top_artists_name:
+                top_artists_name.append(artist_data['name'])
+                top_artists_uri.append(artist_data['uri'])
+        return top_artists_uri
+
+
+def get_top_10songs_from_top_artists(sp_auth, top_artists_uri):
+    top_10tracks_uri = []
+    for artist in top_artists_uri:
+        top_tracks_all = sp_auth.artist_top_tracks(artist)
+        top_tracks = top_tracks_all['tracks']
+        for track_data in top_tracks:
+            top_10tracks_uri.append(track_data['uri'])
+    return top_10tracks_uri
+
+
 #Defining users and authorization codes
 
 username = '1167152572'
@@ -20,98 +46,88 @@ playlist_id = '3Uvw17LxK0xgJUiiGEebZE'
 playlist_url = 'https://open.spotify.com/playlist/3Uvw17LxK0xgJUiiGEebZE'
 
 
-
 #Finding top artists 100, mine and Jose's
 
-#short term range means 4 weeks, medium is 6 months and long-term is of all time
-
-def my_top_artists(sp):
-    print('Give me a second..')
-    top_artists_name_c = []
-    top_artists_uri_c = []
-
-    ranges = ['short_term', 'medium_term']
-    for r in ranges:
-        all_top_artists = sp.current_user_top_artists(limit=100, time_range= r)
-        top_artists_data = all_top_artists['items']
-        for artist_data in top_artists_data:
-            if artist_data['name'] not in top_artists_name_c:
-                top_artists_name_c.append(artist_data['name'])
-                top_artists_uri_c.append(artist_data['uri'])
-
-    return top_artists_uri_c
-
-def j_top_artists(sp_j):
-    print('Give me another second..')
-    top_artists_name_j = []
-    top_artists_uri_j = []
-
-    ranges = ['short_term', 'medium_term']
-    for r in ranges:
-        all_top_artists = sp_j.current_user_top_artists(limit=100, time_range= r)
-        top_artists_data = all_top_artists['items']
-        for artist_data in top_artists_data:
-            if artist_data['name'] not in top_artists_name_j:
-                top_artists_name_j.append(artist_data['name'])
-                top_artists_uri_j.append(artist_data['uri'])
-
-    return top_artists_uri_j
+# def my_top_artists(sp):
+#     print('Give me a second..')
+#     top_artists_name_c = []
+#     top_artists_uri_c = []
+#
+#     ranges = ['short_term', 'medium_term']
+#     for r in ranges:
+#         all_top_artists = sp.current_user_top_artists(limit=100, time_range= r)
+#         top_artists_data = all_top_artists['items']
+#         for artist_data in top_artists_data:
+#             if artist_data['name'] not in top_artists_name_c:
+#                 top_artists_name_c.append(artist_data['name'])
+#                 top_artists_uri_c.append(artist_data['uri'])
+#
+#     return top_artists_uri_c
+#
+# def j_top_artists(sp_j):
+#     print('Give me another second..')
+#     top_artists_name_j = []
+#     top_artists_uri_j = []
+#
+#     ranges = ['short_term', 'medium_term']
+#     for r in ranges:
+#         all_top_artists = sp_j.current_user_top_artists(limit=100, time_range= r)
+#         top_artists_data = all_top_artists['items']
+#         for artist_data in top_artists_data:
+#             if artist_data['name'] not in top_artists_name_j:
+#                 top_artists_name_j.append(artist_data['name'])
+#                 top_artists_uri_j.append(artist_data['uri'])
+#
+#     return top_artists_uri_j
 
 
-#Now I'm getting the top 10 songs for each of these artists selected
 
-def my_top_artists_top_10songs(sp, top_artists_uri_c):
-    print('..I\'m looking into CinCin\'s songs')
-    top_10tracks_uri_c = []
-    for artist in top_artists_uri_c:
-        top_tracks_all = sp.artist_top_tracks(artist)
-        top_tracks = top_tracks_all['tracks']
-        for track_data in top_tracks:
-            top_10tracks_uri_c.append(track_data['uri'])
-    return top_10tracks_uri_c
+#Finding my top artists 100 and their top 10 songs:
 
-def j_top_artists_top_10songs(sp_j, top_artists_uri_j):
-    print('..I\'m looking into Jose\'s songs')
-    top_10tracks_uri_j = []
-    for artist in top_artists_uri_j:
-        top_tracks_all = sp_j.artist_top_tracks(artist)
-        top_tracks = top_tracks_all['tracks']
-        for track_data in top_tracks:
-            top_10tracks_uri_j.append(track_data['uri'])
-    return top_10tracks_uri_j
+print("Wait a minute, I'm looking into Cincin's top artists..")
+
+top_artists_uri_c = get_top_artists(sp)
 
 
-#Now I am calling the functions and shuffling the results
+# top_10tracks_uri_c = my_top_artists_top_10songs(sp, top_artists_uri_c)
 
-top_artists_uri_c = my_top_artists(sp)
+print("..getting their top tracks..")
 
-top_10tracks_uri_c = my_top_artists_top_10songs(sp, top_artists_uri_c)
+top_10tracks_uri_c = get_top_10songs_from_top_artists(sp, top_artists_uri_c)
 
 
-top_artists_uri_j = j_top_artists(sp_j)
+#Finding Jose's artists 100 and their top 10 songs:
 
-top_10tracks_uri_j = j_top_artists_top_10songs(sp_j, top_artists_uri_j)
+print("Wait a bit more, I'm looking into Jose's top artists..")
 
+top_artists_uri_j = get_top_artists(sp_j)
+
+# top_10tracks_uri_j = j_top_artists_top_10songs(sp_j, top_artists_uri_j)
+
+print("..getting their top tracks..")
+
+top_10tracks_uri_j = get_top_10songs_from_top_artists(sp_j, top_artists_uri_j)
+
+#Now I am shuffling the results
 
 random.shuffle(top_10tracks_uri_c)
 random.shuffle(top_10tracks_uri_j)
 
-#getting 3 random tracks from Cin and 3 from Jose to use as seeds to create the final playlist
+#getting 2 random tracks from Cin and 2 from Jose to use as seeds to create the final playlist
 
 random_selected_c = random.sample(top_10tracks_uri_c, 2)
 random_selected_j = random.sample(top_10tracks_uri_j, 2)
 
 
-top_10tracks_uri = random_selected_c + random_selected_j
-random.shuffle(top_10tracks_uri)
+random_seeds_tracks = random_selected_c + random_selected_j
+random.shuffle(random_seeds_tracks)
 
-random_seeds_tracks = top_10tracks_uri
-
-#These 6 tracks will be seeds to find new tracks, and based on the mood I will select specific parameters for the tracks
+# These 4 tracks will be seeds to find similar new tracks,
+# Now based on the mood I will select specific parameters for the tracks of my new playlist
 
 track_ids = []
 
-mood = input('I\'m ready! How do you feel today? Sloth, Quokka, Cheetah or just curious?')
+mood = input('I\'m ready! How do you feel today? Sloth, Quokka, Cheetah or curious?')
 print('Okay! Picking your tracks...')
 
 if mood.lower() not in ['sloth', 'quokka', 'cheetah']:
@@ -124,19 +140,16 @@ else:
     if mood.lower() == 'sloth':
         val_min, val_max = 0, 0.3
         ene_min, ene_max = 0, 0.3
-        tem_min, tem_max = 0, 140
         tem_target = 100
 
     elif mood.lower() == 'quokka':
         val_min, val_max = 0.4, 0.7
         ene_min, ene_max = 0.4, 0.6
-        tem_min, tem_max = 100, 170
         tem_target = 140
 
     elif mood.lower() == 'cheetah':
         val_min, val_max = 0.7, 1.0
         ene_min, ene_max = 0.7, 1.0
-        tem_min, tem_max = 160, 230
         tem_target = 180
 
 
