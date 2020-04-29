@@ -46,50 +46,11 @@ playlist_id = '3Uvw17LxK0xgJUiiGEebZE'
 playlist_url = 'https://open.spotify.com/playlist/3Uvw17LxK0xgJUiiGEebZE'
 
 
-#Finding top artists 100, mine and Jose's
-
-# def my_top_artists(sp):
-#     print('Give me a second..')
-#     top_artists_name_c = []
-#     top_artists_uri_c = []
-#
-#     ranges = ['short_term', 'medium_term']
-#     for r in ranges:
-#         all_top_artists = sp.current_user_top_artists(limit=100, time_range= r)
-#         top_artists_data = all_top_artists['items']
-#         for artist_data in top_artists_data:
-#             if artist_data['name'] not in top_artists_name_c:
-#                 top_artists_name_c.append(artist_data['name'])
-#                 top_artists_uri_c.append(artist_data['uri'])
-#
-#     return top_artists_uri_c
-#
-# def j_top_artists(sp_j):
-#     print('Give me another second..')
-#     top_artists_name_j = []
-#     top_artists_uri_j = []
-#
-#     ranges = ['short_term', 'medium_term']
-#     for r in ranges:
-#         all_top_artists = sp_j.current_user_top_artists(limit=100, time_range= r)
-#         top_artists_data = all_top_artists['items']
-#         for artist_data in top_artists_data:
-#             if artist_data['name'] not in top_artists_name_j:
-#                 top_artists_name_j.append(artist_data['name'])
-#                 top_artists_uri_j.append(artist_data['uri'])
-#
-#     return top_artists_uri_j
-
-
-
 #Finding my top artists 100 and their top 10 songs:
 
 print("Wait a minute, I'm looking into Cincin's top artists..")
 
 top_artists_uri_c = get_top_artists(sp)
-
-
-# top_10tracks_uri_c = my_top_artists_top_10songs(sp, top_artists_uri_c)
 
 print("..getting their top tracks..")
 
@@ -102,11 +63,10 @@ print("Wait a bit more, I'm looking into Jose's top artists..")
 
 top_artists_uri_j = get_top_artists(sp_j)
 
-# top_10tracks_uri_j = j_top_artists_top_10songs(sp_j, top_artists_uri_j)
-
 print("..getting their top tracks..")
 
 top_10tracks_uri_j = get_top_10songs_from_top_artists(sp_j, top_artists_uri_j)
+
 
 #Now I am shuffling the results
 
@@ -155,7 +115,7 @@ else:
 
 find_new_songs = sp.recommendations(
     seed_tracks= random_seeds_tracks,
-    limit=[30],
+    limit=[20],
     min_valence=val_min,
     max_valence=val_max,
     min_energy=ene_min,
