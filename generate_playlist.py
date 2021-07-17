@@ -5,13 +5,14 @@ Created by: Cinzia Ferrari
 """
 
 import random
-import spotipy
 
+from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth
+
 from utils import *
 
 if __name__ == "__main__":
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=SCOPE))
+    sp = Spotify(auth_manager=SpotifyOAuth(scope=SCOPE))
 
     # Finding my top artists 100 and their top 10 songs:
     print("Wait a minute, I'm looking into your top artists..")
