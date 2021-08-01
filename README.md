@@ -9,7 +9,10 @@ Dance your mood out!
 ### Dependencies
 
 ```
-spotipy 2.18.0
+python          3.8
+spotipy         2.18.0
+flask           2.0.1
+flask-session   0.4.0
 ```
 
 ### How to use
