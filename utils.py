@@ -4,7 +4,7 @@ from os.path import isfile, join, dirname, realpath
 SCOPE = 'user-library-read user-top-read playlist-modify-public user-follow-read playlist-read-private playlist-modify-private'
 PLAYLIST_FILE_FILENAME = 'generated_playlist_info.csv'
 PLAYLIST_FILE_PATH = join(dirname(realpath(__file__)), PLAYLIST_FILE_FILENAME)
-
+MOOOODY_PLAYLIST_NAME = 'Embrace your mood and dance with it!'
 
 def get_top_artists(sp_auth):
     """

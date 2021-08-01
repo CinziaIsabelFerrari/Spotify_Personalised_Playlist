@@ -69,14 +69,14 @@ if __name__ == "__main__":
     if isfile(PLAYLIST_FILE_PATH):
         # Updating existing playlist
         playlist_id, playlist_url = read_playlist_file()
-        add_songs = sp.playlist_replace_items(playlist_id, track_ids)
+        sp.playlist_replace_items(playlist_id, track_ids)
     else:
         # Creating new playlist
         playlist_name = 'Embrace your mood and dance with it!'
         playlist = sp.user_playlist_create(sp.me()['id'], playlist_name, public=True)
         playlist_id, playlist_url = playlist['id'], playlist['external_urls']['spotify']
 
-        add_songs = sp.playlist_add_items(playlist_id, track_ids)
+        sp.playlist_add_items(playlist_id, track_ids)
         create_playlist_file(playlist_id, playlist_url)
 
     print('You''ve created a playlist with {} brand new song. Enjoy it!'.format(len(track_ids)))

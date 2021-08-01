@@ -2,3 +2,6 @@
 .idea
 __pycache__
 generated_playlist_info.csv
+credentials.sh
+.flask_session/
+.spotify_caches/
