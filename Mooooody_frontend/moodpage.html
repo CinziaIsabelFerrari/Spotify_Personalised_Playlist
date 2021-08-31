@@ -26,39 +26,49 @@
 
   <div style="display: table; height: 100%; width:100%; margin: 15em auto; overflow: hidden;">
     <div style="display: table-cell; vertical-align: middle; text-align:center;">
-      <div class="t5">How do you feel today?</div>
-          <div class="buttons">
-            <a class="button" href="">SLOTH</a>
-            <a class="button" href="">QUOKKA</a>
-            <a class="button" href="">CHEETAH</a>
-            <a class="button" href="">CURIOUS</a>
-          </div>
-      <!-- <button id="startButton" class="t3">START</button> -->
+      <div class="t2">How do you feel today?</div>
+      <!-- <div class="t5">A Spotify playlist generator based on your mood</div>
+      <button id="startButton" class="t3">START</button> -->
+      <div class="boxes">
+
+        <button id="slothbox" class="t5">Sloth</></button>
+        <div class="descriptions">slow</div>
+
+        <button id="quokkabox" class="t5">Quokka</></button>
+        <div class="descriptions">slow</div>
+
+        <button id="cheetahbox" class="t5">Cheetah</></button>
+        <div class="descriptions">slow</div>
+
+        <button id="curiousbox" class="t5">Curious</></button>
+        <div class="descriptions">slow</div>
+
+      </div>
     </div>
   </div>
 
 
 
-  </div>
 
   <script>
     // Start button
-    document.getElementById("startButton").onclick = function() {
+    document.getElementById("slothbox").onclick = function() {
       window.location.href = '/login';
     };
     // Button style
+
     var c1 = randomColor({
       luminosity: 'light'
     });
     var c2 = randomColor({
       luminosity: 'light'
     });
-    $("#startButton").mouseenter(function() {
+    $("#slothbox").mouseenter(function() {
       $(this).css("background", "red").css("background", "-webkit-linear-gradient(" + c1 + ", " + c2 + ")").css("background", "-o-linear-gradient(" + c1 + ", " + c2 + ")").css("background", "-moz-linear-gradient(" + c1 + ", " + c2 + ")").css(
         "background",
         " linear-gradient(" + c1 + ", " + c2 + ")");
     }).mouseleave(function() {
-      $(this).css("background", "#d1d1d1");
+      $(this).css("background", "#1DB954");
     });
   </script>
   <!--<a href="/login">Login</a>-->

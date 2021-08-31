@@ -120,33 +120,6 @@ html, body {
   flex-wrap: wrap;
 }
 
-.container {
-  width: 200px;
-  height: 100px;
-  display: flex;
-  justify-content:center;
-}
-
-.button {
-  width: 50px;
-  height: 50px;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 300;
-  font-size: 20px;
-  cursor: pointer;
-  text-decoration: none;
-  color: #E8DFE0;
-  border-radius: 2px;
-  text-shadow: none; /* Prevent inheritance from `body` */
-  background-color: #333;
-  border: .05rem solid #333;
-  margin: 10px;
-  margin-top: 10px;
-  padding: 40px 40px 40px 40px;
-}
-
-
-
 .boxes {
   display: flex;
   justify-content: center;
@@ -157,13 +130,43 @@ html, body {
 #slothbox {
   border-radius: 45px;
   padding: 20px;
-  width: 120px;
+  width: 160px;
   border: .03rem solid white;
   margin: 10px;
   margin-top: 10px;
   background-color: inherit;
  }
 
+#quokkabox {
+  border-radius: 45px;
+  padding: 20px;
+  width: 160px;
+  border: .03rem solid white;
+  margin: 10px;
+  margin-top: 10px;
+  background-color: inherit;
+}
+
+#cheetahbox {
+  border-radius: 45px;
+  padding: 20px;
+  width: 160px;
+  border: .03rem solid white;
+  margin: 10px;
+  margin-top: 10px;
+  background-color: inherit;
+}
+
+
+#curiousbox {
+  border-radius: 45px;
+  padding: 20px;
+  width: 160px;
+  border: .03rem solid white;
+  margin: 10px;
+  margin-top: 10px;
+  background-color: inherit;
+    }
 
 .descriptions {
   display: none;
@@ -194,6 +197,26 @@ html, body {
 
 
 button#slothbox:hover + div.descriptions {
+    display: block;
+    transition: opacity 300ms ease;
+}
+
+button#quokkabox:hover + div.descriptions {
+    display: block;
+    transition: opacity 300ms ease;
+}
+
+button#quokkabox:hover {
+    border: hidden;
+    transition: opacity 300ms ease;
+}
+
+button#cheetahbox:hover + div.descriptions {
+    display: block;
+    transition: opacity 300ms ease;
+}
+
+button#curiousbox:hover + div.descriptions {
     display: block;
     transition: opacity 300ms ease;
 }
