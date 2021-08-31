@@ -6,6 +6,7 @@ html, body {
 
 /* Titles */
 
+
 .t3 {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
@@ -168,31 +169,19 @@ html, body {
   background-color: inherit;
     }
 
+button#slothbox:hover .descriptions {
+  position: absolute;
+  display: block;}
+
 .descriptions {
   display: none;
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   color: white;
-  font-size: 10px;
+  font-size: 1.5em;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-
-
-.list-categories{
-  list-style-type: none;
-  padding: 0px;
-  margin: 0px;
-  max-height: 0px;
-  opacity: 0;
-  overflow: hidden;
-  transition: opacity 300ms ease;
+  min-width: 160px;
+  z-index: 1;
 }
 
 
@@ -213,6 +202,11 @@ button#quokkabox:hover {
 
 button#cheetahbox:hover + div.descriptions {
     display: block;
+    transition: opacity 300ms ease;
+}
+
+button#cheetahbox:hover {
+    border: hidden;
     transition: opacity 300ms ease;
 }
 
