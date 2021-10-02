@@ -1,7 +1,8 @@
-html, body {
+body {
   margin: 0;
   padding: 0;
-  background-image: linear-gradient(to right, #4163a9 , #7d4fa3);
+  background-color: #020202;
+  /* background-image: linear-gradient(to right, #4163a9 , #7d4fa3); */
 }
 
 /* Titles */
@@ -70,43 +71,6 @@ html, body {
   }
 }
 
-
-/* Tooltip text */
-
-.t1 .tooltiptext {
-  font-family: 'Roboto', sans-serif;
-  visibility: hidden;
-  background-color: #f7f7f7;
-  opacity: 0.9;
-  color: #a0a0a0;
-  text-align: center;
-  padding: 0.5em 0.5em;
-  border-radius: 6px;
-  font-size: 0.35em;
-  text-align: center;
-  bottom: 20%;
-  position: absolute;
-  z-index: 1;
-  left: 50%;
-  margin-left: -15%;
-  width: 30%;
-}
-
-@media only screen and (max-device-width: 768px) {
-  /* For mobile phones: */
-  .t1 .tooltiptext {
-    font-size: 0.5em;
-    margin-left: -40%;
-    width: 80%;
-  }
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-
-.t1:hover .tooltiptext {
-  visibility: visible;
-}
-
 #startButton {
   border-radius: 45px;
   padding: 20px;
@@ -158,7 +122,6 @@ html, body {
   background-color: inherit;
 }
 
-
 #curiousbox {
   border-radius: 45px;
   padding: 20px;
@@ -167,26 +130,36 @@ html, body {
   margin: 10px;
   margin-top: 10px;
   background-color: inherit;
-    }
-
-button#slothbox:hover .descriptions {
-  position: absolute;
-  display: block;}
+}
 
 .descriptions {
   display: none;
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   color: white;
-  font-size: 1.5em;
+  font-size: 1.2em;
+  line-height: 2;
+  margin-top:20px;
+  margin-left: 10px;
+  float: inherit;
   position: absolute;
   min-width: 160px;
-  z-index: 1;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 
 button#slothbox:hover + div.descriptions {
     display: block;
+    transition: opacity 300ms ease;
+}
+
+button#slothbox:hover {
+    border: hidden;
     transition: opacity 300ms ease;
 }
 

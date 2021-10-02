@@ -27,46 +27,116 @@
   <div style="display: table; height: 100%; width:100%; margin: 15em auto; overflow: hidden;">
     <div style="display: table-cell; vertical-align: middle; text-align:center;">
       <div class="t2">How do you feel today?</div>
-      <!-- <div class="t5">A Spotify playlist generator based on your mood</div>
-      <button id="startButton" class="t3">START</button> -->
+
       <div class="boxes">
 
-        <button id="slothbox" class="t5">Sloth</></button>
-        <div class="descriptions">slow</div>
+        <div>
+          <button id="slothbox" class="t5">Sloth</></button>
+          <div class="descriptions">
+            <ul>
+              <li>slow</li>
+              <li>lazy</li>
+              <li>relaxed</li>
+            </ul>
+          </div>
+        </div>
 
-        <button id="quokkabox" class="t5">Quokka</></button>
-        <div class="descriptions">slow</div>
+        <div>
+          <button id="quokkabox" class="t5">Quokka</></button>
+          <div class="descriptions">
+            <ul>
+              <li>happy</li>
+              <li>positive</li>
+              <li>upbeat</li>
+            </ul>
+          </div>
+        </div>
 
-        <button id="cheetahbox" class="t5">Cheetah</></button>
-        <div class="descriptions">slow</div>
+        <div>
+          <button id="cheetahbox" class="t5">Cheetah</></button>
+          <div class="descriptions">
+            <ul>
+              <li>excited</li>
+              <li>energetic</li>
+              <li>fast</li>
+            </ul>
+          </div>
+        </div>
 
+        <div>
         <button id="curiousbox" class="t5">Curious</></button>
-        <div class="descriptions">slow</div>
+          <div class="descriptions">
+            <ul>
+              <li>open-minded</li>
+              <li>indecided</li>
+              <li>flexible</li>
+            </ul>
+          </div>
+        </div>
 
       </div>
     </div>
   </div>
 
   <script>
-    // Start button
+
+
+    // change background color on hover
+
+    var button = document.getElementById('slothbox');
+      button.onmouseover = function(e) {
+      document.body.style.background = "linear-gradient(to right, #0288d1 , #1a237e)";
+      };
+      button.onmouseout = function(e) {
+      document.body.style.background = "#020202";
+      };
+
+
+    var button = document.getElementById('quokkabox');
+      button.onmouseover = function(e) {
+      document.body.style.background = "linear-gradient(to right, #ffd54f, #ff9800)";
+      };
+      button.onmouseout = function(e) {
+      document.body.style.background = "#020202";
+      };
+
+    var button = document.getElementById('cheetahbox');
+      button.onmouseover = function(e) {
+      document.body.style.background = "linear-gradient(to right, #cc0000 , #c51162)";
+      };
+      button.onmouseout = function(e) {
+      document.body.style.background = "#020202";
+      };
+
+
+    var button = document.getElementById('curiousbox');
+      button.onmouseover = function(e) {
+      document.body.style.background = "linear-gradient(to right, #ab47bc, #00c853)";
+      };
+      button.onmouseout = function(e) {
+      document.body.style.background = "#020202";
+      };
+
+
+
     document.getElementById("slothbox").onclick = function() {
       window.location.href = '/login';
     };
     // Button style
 
-    var c1 = randomColor({
-      luminosity: 'light'
-    });
-    var c2 = randomColor({
-      luminosity: 'light'
-    });
-    $("#slothbox").mouseenter(function() {
-      $(this).css("background", "red").css("background", "-webkit-linear-gradient(" + c1 + ", " + c2 + ")").css("background", "-o-linear-gradient(" + c1 + ", " + c2 + ")").css("background", "-moz-linear-gradient(" + c1 + ", " + c2 + ")").css(
-        "background",
-        " linear-gradient(" + c1 + ", " + c2 + ")");
-    }).mouseleave(function() {
-      $(this).css("background", "inherit");
-    });
+    // var c1 = randomColor({
+    //   luminosity: 'light'
+    // });
+    // var c2 = randomColor({
+    //   luminosity: 'light'
+    // });
+    // $("#slothbox").mouseenter(function() {
+    //   $(this).css("background", "red").css("background", "-webkit-linear-gradient(" + c1 + ", " + c2 + ")").css("background", "-o-linear-gradient(" + c1 + ", " + c2 + ")").css("background", "-moz-linear-gradient(" + c1 + ", " + c2 + ")").css(
+    //     "background",
+    //     " linear-gradient(" + c1 + ", " + c2 + ")");
+    // }).mouseleave(function() {
+    //   $(this).css("background", "inherit");
+    // });
   </script>
   <!--<a href="/login">Login</a>-->
 </body>
