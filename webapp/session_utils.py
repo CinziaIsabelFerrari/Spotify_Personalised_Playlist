@@ -1,12 +1,13 @@
 from os import path, makedirs
 from time import time
 
-from flask import Flask, redirect, request, session
+from flask import session
 import spotipy
 
 from credentials import CLI_ID, CLI_SEC, REDIRECT_URI
 
 SCOPE = 'playlist-modify-private,playlist-modify-public,user-top-read'
+
 
 caches_folder = './.spotify_caches/'
 if not path.exists(caches_folder):

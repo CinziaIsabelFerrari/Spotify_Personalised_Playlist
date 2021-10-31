@@ -35,34 +35,31 @@ def generate_playlist(sp, seed_tracks, val_min, val_max, ene_min, ene_max, tem_t
     return f'Enjoy your playlist!' \
             f'<a href="{playlist_url}" target="_blank">LINK</a>'
 
-def get_random_top_artists(sp_auth, artists_per_range=2):
+def get_top_artists(sp_auth):
     """
-    Gets random top artists in short and medium term ranges
+    Gets top artists in short and medium term ranges
     :param sp_auth: spotipy.Spotify
     :return: list
     """
-
     artists_short = sp_auth.current_user_top_artists(limit=100, time_range='short_term')['items']
     artists_medium = sp_auth.current_user_top_artists(limit=100, time_range='medium_term')['items']
     artists = artists_short + artists_medium
-
     artists_uris = [i['uri'] for i in artists]
     artists_uris = list(dict.fromkeys(artists_uris)) # Remove duplicates
+    return artists_uris
 
-    random_artists_uris = random.sample(artists_uris, 2)
-    
-    return random_artists_uris
 
-def get_random_tracks_from_artists(sp_auth, artists_uri):
+def get_random_tracks_from_random_artists(sp_auth, artists_uris):
     """
     Gets single random track per artist
     :param sp_auth: spotipy.Spotify
-    :param artists_uri: list
+    :param artists_uris: list
     :return: list
     """
-    track_uris = []
+    artists_uris = random.sample(artists_uris, 2)
 
-    for artist in artists_uri:
+    track_uris = []
+    for artist in artists_uris:
         top_tracks = sp_auth.artist_top_tracks(artist)['tracks']
         random_track = random.sample(top_tracks, 1)[0]
         track_uris.append(random_track['uri'])

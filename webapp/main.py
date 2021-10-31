@@ -1,19 +1,31 @@
 from os import remove
-from time import time
 
 from flask import Flask, redirect, request, session, render_template
 import spotipy
 import uuid
 
-from playlist_utils import get_random_tracks_from_artists, get_random_top_artists, generate_playlist
+from playlist_utils import get_random_tracks_from_random_artists, get_top_artists, generate_playlist
 from session_utils import get_sp_oauth, get_token_from_session, session_cache_path
 from credentials import SECRET_KEY
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 
-SEED_TRACKS = []
 SP = []
+TOP_ARTISTS = []
+SEED_TRACKS = []
+
+
+def _preprocess_top_artists():
+    global TOP_ARTISTS
+    if not TOP_ARTISTS:
+        TOP_ARTISTS = get_top_artists(SP)
+
+
+def _initialise_sp_auth():
+    global SP
+    if not SP:
+        SP = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
 
 
 @app.route("/sign_in")
@@ -78,8 +90,9 @@ def api_callback():
 
 @app.route("/start")
 def start():
-    global SEED_TRACKS
     global SP
+    global TOP_ARTISTS
+    global SEED_TRACKS
 
     if not session.get('uuid'):
         session['uuid'] = str(uuid.uuid4()) # random ID for unknown user
@@ -89,10 +102,9 @@ def start():
     if not authorized:
         return redirect('sign_in')
 
-    SP = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
-
-    artists = get_random_top_artists(SP)
-    SEED_TRACKS = get_random_tracks_from_artists(SP, artists)
+    _initialise_sp_auth()
+    _preprocess_top_artists()
+    SEED_TRACKS = get_random_tracks_from_random_artists(SP, TOP_ARTISTS)
 
     return f'<h2>Hi {SP.me()["display_name"]}, how do you feel today? ' \
             f'<small><a href="/sign_out">[sign out]<a/></small></h2>' \
