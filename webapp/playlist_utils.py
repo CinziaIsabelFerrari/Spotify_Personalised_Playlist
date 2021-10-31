@@ -3,8 +3,8 @@ import random
 MOOOODY_PLAYLIST_NAME = 'Embrace your mood and dance with it!'
 
 
-def generate_playlist(sp, val_min, val_max, ene_min, ene_max, tem_target):
-    top_tracks = get_top_10songs_from_artists(sp, get_top_artists(sp))
+def generate_playlist(sp, top_tracks, val_min, val_max, ene_min, ene_max, tem_target):
+    # top_tracks = get_top_10songs_from_artists(sp, get_top_artists(sp))
     random.shuffle(top_tracks)
     random_seed_tracks = random.sample(top_tracks, 2)
 
@@ -48,19 +48,15 @@ def get_top_artists(sp_auth):
     :return: list
     """
 
-    top_artists_name = []
-    top_artists_uri = []
+    artists_short = sp_auth.current_user_top_artists(limit=100, time_range='short_term')['items']
+    artists_medium = sp_auth.current_user_top_artists(limit=100, time_range='medium_term')['items']
 
-    ranges = ['short_term',
-              'medium_term']  # short term range means 4 weeks, medium is 6 months and long-term is of all time
-    for r in ranges:
-        all_top_artists = sp_auth.current_user_top_artists(limit=100, time_range=r)
-        top_artists_data = all_top_artists['items']
-        for artist_data in top_artists_data:
-            if artist_data['name'] not in top_artists_name:
-                top_artists_name.append(artist_data['name'])
-                top_artists_uri.append(artist_data['uri'])
-        return top_artists_uri
+    artists_short_uris = [i['uri'] for i in artists_short]
+    artists_medium_uris = [i['uri'] for i in artists_medium]
+    top_artists_uris = artists_short_uris + artists_medium_uris
+    top_artists_uris = list(dict.fromkeys(top_artists_uris)) # Remove duplicates
+
+    return top_artists_uris
 
 
 def get_top_10songs_from_artists(sp_auth, artists_uri):

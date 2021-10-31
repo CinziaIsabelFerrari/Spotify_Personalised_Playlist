@@ -11,6 +11,9 @@ from credentials import SECRET_KEY
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 
+TOP_TRACKS = []
+SP = []
+
 
 @app.route("/sign_in")
 def sign_in():
@@ -32,46 +35,50 @@ def sign_out():
 
 @app.route('/sloth')
 def sloth():
-    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+    global TOP_TRACKS
+    global SP
 
     val_min, val_max = 0, 0.3
     ene_min, ene_max = 0, 0.3
     tem_target = 100
 
-    return generate_playlist(sp, val_min, val_max, ene_min, ene_max, tem_target)
+    return generate_playlist(SP, TOP_TRACKS, val_min, val_max, ene_min, ene_max, tem_target)
 
 
 @app.route('/cheetah')
 def cheetah():
-    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+    global TOP_TRACKS
+    global SP
 
     val_min, val_max = 0.7, 1.0
     ene_min, ene_max = 0.7, 1.0
     tem_target = 180
 
-    return generate_playlist(sp, val_min, val_max, ene_min, ene_max, tem_target)
+    return generate_playlist(SP, TOP_TRACKS, val_min, val_max, ene_min, ene_max, tem_target)
 
 
 @app.route('/quokka')
 def quokka():
-    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+    global TOP_TRACKS
+    global SP
 
     val_min, val_max = 0.4, 0.7
     ene_min, ene_max = 0.4, 0.6
     tem_target = 140
 
-    return generate_playlist(sp, val_min, val_max, ene_min, ene_max, tem_target)
+    return generate_playlist(SP, TOP_TRACKS, val_min, val_max, ene_min, ene_max, tem_target)
 
 
 @app.route('/curious')
 def curious():
-    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+    global TOP_TRACKS
+    global SP
 
     val_min, val_max = 0, 1.0
     ene_min, ene_max = 0, 1.0
     tem_target = None
 
-    return generate_playlist(sp, val_min, val_max, ene_min, ene_max, tem_target)
+    return generate_playlist(SP, TOP_TRACKS, val_min, val_max, ene_min, ene_max, tem_target)
 
 
 @app.route("/callback")
@@ -94,9 +101,14 @@ def start():
     if not authorized:
         return redirect('sign_in')
 
-    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+    global SP
+    SP = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
 
-    return f'<h2>Hi {sp.me()["display_name"]}, how do you feel today? ' \
+    # This takes too long - can run in background?
+    global TOP_TRACKS
+    TOP_TRACKS = get_top_10songs_from_artists(SP, get_top_artists(SP))
+
+    return f'<h2>Hi {SP.me()["display_name"]}, how do you feel today? ' \
             f'<small><a href="/sign_out">[sign out]<a/></small></h2>' \
             f'<a href="/sloth">SLOTH</a> | ' \
             f'<a href="/quokka">QUOKKA</a> | ' \
@@ -106,7 +118,6 @@ def start():
 
 @app.route("/index", methods=['GET', 'POST'])
 def index():
-    # return f'<a href="/start">START HERE</a>'
     return render_template('index.html')
 
 
