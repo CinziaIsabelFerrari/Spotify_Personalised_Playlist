@@ -3,5 +3,6 @@
 __pycache__
 generated_playlist_info.csv
 credentials.sh
+webapp/credentials.py
 .flask_session/
 .spotify_caches/
