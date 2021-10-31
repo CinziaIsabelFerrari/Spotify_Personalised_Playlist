@@ -4,8 +4,8 @@ from flask import Flask, redirect, request, session, render_template
 import spotipy
 import uuid
 
-from playlist_utils import *
-from session_utils import *
+from playlist_utils import get_top_artists, get_top_10songs_from_artists, generate_playlist
+from session_utils import get_sp_oauth, get_token_from_session, session_cache_path
 from credentials import SECRET_KEY
 
 app = Flask(__name__)
@@ -16,7 +16,6 @@ app.secret_key = SECRET_KEY
 def sign_in():
     sp_oauth = get_sp_oauth()
     auth_url = sp_oauth.get_authorize_url()
-
     return redirect(auth_url)
 
 
@@ -39,7 +38,7 @@ def sloth():
     ene_min, ene_max = 0, 0.3
     tem_target = 100
 
-    return get_playlist(sp, val_min, val_max, ene_min, ene_max, tem_target)
+    return generate_playlist(sp, val_min, val_max, ene_min, ene_max, tem_target)
 
 
 @app.route('/cheetah')
@@ -50,7 +49,7 @@ def cheetah():
     ene_min, ene_max = 0.7, 1.0
     tem_target = 180
 
-    return get_playlist(sp, val_min, val_max, ene_min, ene_max, tem_target)
+    return generate_playlist(sp, val_min, val_max, ene_min, ene_max, tem_target)
 
 
 @app.route('/quokka')
@@ -61,7 +60,7 @@ def quokka():
     ene_min, ene_max = 0.4, 0.6
     tem_target = 140
 
-    return get_playlist(sp, val_min, val_max, ene_min, ene_max, tem_target)
+    return generate_playlist(sp, val_min, val_max, ene_min, ene_max, tem_target)
 
 
 @app.route('/curious')
@@ -72,12 +71,11 @@ def curious():
     ene_min, ene_max = 0, 1.0
     tem_target = None
 
-    return get_playlist(sp, val_min, val_max, ene_min, ene_max, tem_target)
+    return generate_playlist(sp, val_min, val_max, ene_min, ene_max, tem_target)
 
 
 @app.route("/callback")
 def api_callback():
-    print('callback')
     sp_oauth = get_sp_oauth()
 
     code = request.args.get('code')

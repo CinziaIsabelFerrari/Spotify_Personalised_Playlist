@@ -12,8 +12,10 @@ caches_folder = './.spotify_caches/'
 if not path.exists(caches_folder):
     makedirs(caches_folder)
 
+
 def session_cache_path():
     return caches_folder + session.get('uuid')
+
 
 def get_sp_oauth():
     cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
@@ -23,9 +25,9 @@ def get_sp_oauth():
         show_dialog=True)
     return sp_oauth
 
+
 # Checks to see if token is valid and gets a new token if not
 def get_token_from_session(session):
-    print('getting token')
     token_valid = False
     token_info = session.get("token_info", {})
 

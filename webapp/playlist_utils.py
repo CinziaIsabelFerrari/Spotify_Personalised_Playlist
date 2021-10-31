@@ -2,21 +2,15 @@ import random
 
 MOOOODY_PLAYLIST_NAME = 'Embrace your mood and dance with it!'
 
-def get_playlist(sp, val_min, val_max, ene_min, ene_max, tem_target):
-    print('getting playlist')
-    # Finding my top artists 100 and their top 10 songs:
-    top_artists_uri_c = get_top_artists(sp)
 
-    # Get top tracks and shuffle
-    top_10tracks_uri_c = get_top_10songs_from_top_artists(sp, top_artists_uri_c)
-    random.shuffle(top_10tracks_uri_c)
-
-    # Get 2 random tracks to use as seeds
-    random_seed_tracks = random.sample(top_10tracks_uri_c, 2)
+def generate_playlist(sp, val_min, val_max, ene_min, ene_max, tem_target):
+    top_tracks = get_top_10songs_from_artists(sp, get_top_artists(sp))
+    random.shuffle(top_tracks)
+    random_seed_tracks = random.sample(top_tracks, 2)
 
     # Now based on the mood I will select specific parameters for the tracks of my new playlist
     track_ids = []
-    find_new_songs = sp.recommendations(
+    recommended_songs = sp.recommendations(
         seed_tracks=random_seed_tracks,
         limit=[20],
         min_valence=val_min,
@@ -26,24 +20,23 @@ def get_playlist(sp, val_min, val_max, ene_min, ene_max, tem_target):
         target_tempo=tem_target,
     )
 
-    # Prints the selected songs
-    for i, j in enumerate(find_new_songs['tracks']):
-        track_ids.append(j['id'])
-        print('{})\"{}\" by \"{}\"'.format(i + 1, j['name'], j['artists'][0]['name']))
-
-    # if user has playlist with the same name, overwrite it
+    track_ids = [i['id'] for i in recommended_songs['tracks']]
     user_playlists = sp.user_playlists(sp.me()['id'])
+
+    # if user already has playlist, update it
+    playlist_replaced = False
     for i in range(len(user_playlists['items'])):
         if user_playlists['items'][i]['name'] == MOOOODY_PLAYLIST_NAME:
-            print('Unfollowing playlist with name {}'.format(user_playlists['items'][i]['name']))
-            sp.user_playlist_unfollow(sp.me()['id'], user_playlists['items'][i]['id'])
+            sp.playlist_replace_items(user_playlists['items'][i]['id'], track_ids)
+            playlist_url = user_playlists['items'][i]['external_urls']['spotify']
+            playlist_replaced = True
+            break
 
-    # Creating new playlist
-    playlist_name = MOOOODY_PLAYLIST_NAME
-    playlist = sp.user_playlist_create(sp.me()['id'], playlist_name, public=True)
-    playlist_id, playlist_url = playlist['id'], playlist['external_urls']['spotify']
-
-    sp.playlist_add_items(playlist_id, track_ids)
+    # if playlist not found, create it
+    if not playlist_replaced:
+        playlist = sp.user_playlist_create(sp.me()['id'], MOOOODY_PLAYLIST_NAME, public=True)
+        playlist_id, playlist_url = playlist['id'], playlist['external_urls']['spotify']
+        sp.playlist_add_items(playlist_id, track_ids)
 
     return f'Enjoy your playlist!' \
             f'<a href="{playlist_url}" target="_blank">LINK</a>'
@@ -70,16 +63,16 @@ def get_top_artists(sp_auth):
         return top_artists_uri
 
 
-def get_top_10songs_from_top_artists(sp_auth, top_artists_uri):
+def get_top_10songs_from_artists(sp_auth, artists_uri):
     """
     Gets 10 top songs given artist uris
     :param sp_auth: spotipy.Spotify
-    :param top_artists_uri: list
+    :param artists_uri: list
     :return: list
     """
 
     top_10tracks_uri = []
-    for artist in top_artists_uri:
+    for artist in artists_uri:
         top_tracks_all = sp_auth.artist_top_tracks(artist)
         top_tracks = top_tracks_all['tracks']
         for track_data in top_tracks:
