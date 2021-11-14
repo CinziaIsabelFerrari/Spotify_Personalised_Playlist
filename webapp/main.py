@@ -97,6 +97,7 @@ def start():
     if not session.get('uuid'):
         session['uuid'] = str(uuid.uuid4()) # random ID for unknown user
 
+    # not safe to store access token in session?
     session['token_info'], authorized = get_token_from_session(session)
     session.modified = True
     if not authorized:
@@ -125,4 +126,4 @@ def entry():
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
