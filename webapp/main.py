@@ -115,7 +115,7 @@ def start():
             f'<a href="/curious">CURIOUS</a>' \
 
 
-@app.route("/index", methods=['GET', 'POST'])
+@app.route("/index")
 def index():
     return render_template('index.html')
 
