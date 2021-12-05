@@ -69,7 +69,7 @@ body {
   margin-top: 1vh;
   margin-bottom: 5vh;
   color: white;
-  font-size: 2em;
+  font-size: 1.6em;
 }
 
 
@@ -189,6 +189,13 @@ body {
   margin-top: 10px;
   background-color: inherit;
   cursor: pointer;
+}
+
+@media only screen and (min-width: 797px) {
+  .smalldescriptions {
+    opacity:0;
+    display: none;
+  }
 }
 
 .descriptions {

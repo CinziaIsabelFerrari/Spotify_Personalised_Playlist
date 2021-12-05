@@ -13,7 +13,20 @@ body {
   overflow: hidden;
 }
 
-/* Titles */
+.smalldescriptions {
+  display:flex;
+  align-items: end;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  color: white;
+  font-size: 1em;
+  line-height: 2;
+  position: absolute;
+  opacity:1;
+  transition: opacity 0.5s linear;
+  text-align: right;
+}
 
 #startButton {
   border-radius: 45px;
