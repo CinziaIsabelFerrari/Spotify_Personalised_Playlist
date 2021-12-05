@@ -1,0 +1,138 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #020202;
+  /* background-image: linear-gradient(to right, #4163a9 , #7d4fa3); */
+}
+
+.page {
+  display: table; 
+  height:90%; 
+  width:90%; 
+  margin: 1em auto; 
+  overflow: hidden;
+}
+
+/* Titles */
+
+#startButton {
+  border-radius: 45px;
+  padding: 20px;
+  width: 200px;
+  background-color: #1DB954;
+}
+
+.boxes {
+  height: 90%;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.buttonarea {
+  width: 100%;
+  height: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#slothbox {
+  font-size: 1em;;
+  display: flex;
+  align-items: start;
+  justify-content: left;
+  border-radius: 5px;
+  padding: 20px;
+  width:100%;
+  height:100px;
+  border: .03rem solid black;
+  margin: 10px;
+  margin-top: 10px;
+  background-image: linear-gradient(to right, #0288d1 , #1a237e);
+ }
+
+#quokkabox {
+  font-size:1em;
+  display: flex;
+  align-items: start;
+  justify-content: left;
+  border-radius: 5px;
+  padding: 20px;
+  width: 100%;
+  height: 100px;
+  border: .03rem solid black;
+  margin: 10px;
+  margin-top: 10px;
+  background-image: linear-gradient(to right, #ffd54f, #ff9800);
+}
+
+#cheetahbox {
+  font-size:1em;
+  display: flex;
+  align-items: start;
+  justify-content: left;
+  border-radius: 5px;
+  padding: 20px;
+  width: 100%;
+  height: 100px;
+  border: .03rem solid black;
+  margin: 10px;
+  margin-top: 10px;
+  background-image: linear-gradient(to right, #cc0000 , #c51162);
+}
+
+#curiousbox {
+  font-size:1em;
+  display: flex;
+  align-items: start;
+  justify-content: left;
+  border-radius: 5px;
+  padding: 20px;
+  width: 100%;
+  height: 100px;
+  border: .03rem solid black;
+  margin: 10px;
+  margin-top: 10px;
+  background-image: linear-gradient(to right, #ab47bc, #00c853);
+}
+
+.descriptions {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  color: white;
+  font-size: 1.2em;
+  line-height: 2;
+  margin-top:20px;
+  margin-left: 10px;
+  float: inherit;
+  position: absolute;
+  min-width: 160px;
+  opacity:0;
+  transition: opacity 0.5s linear;
+  text-align: center;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+button#slothbox:hover + div.descriptions {
+  opacity:1;
+}
+
+button#quokkabox:hover + div.descriptions {
+  opacity:1;
+}
+
+button#cheetahbox:hover + div.descriptions {
+  opacity:1;
+}
+
+button#curiousbox:hover + div.descriptions {
+  opacity:1;
+}
