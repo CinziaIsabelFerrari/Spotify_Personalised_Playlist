@@ -6,6 +6,7 @@
      <meta name="description" content="Moooody / A Spotify playlist generator based on your mood">
      <meta name="keywords" content="Moooody / A Spotify playlist generator based on your mood">
  		 <title>Moooody</title>
+
      <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.5.2/randomColor.js"></script>
@@ -13,7 +14,10 @@
      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&family=Work+Sans:wght@100&display=swap" rel="stylesheet">
      <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100&display=swap" rel="stylesheet">
+
+
      <link rel='stylesheet' href='stylesheets/style.css' />
+     <link rel="stylesheet" media="only screen and (max-device-width: 797px)" href="stylesheets/smaller.css">
 </head>
 
 <body>
@@ -24,25 +28,24 @@
     });
   </script>
 
-  <div style="display: table; height: 100%; width:100%; margin: 15em auto; overflow: hidden;">
-    <div style="display: table-cell; vertical-align: middle; text-align:center;">
+    <div class="page">
       <div class="t2">How do you feel today?</div>
 
       <div class="boxes">
 
-        <div>
-          <button id="slothbox" class="t5">Sloth</></button>
+        <div class="buttonarea">
+          <button id="slothbox" class="t5">Sloth</button>
           <div class="descriptions">
             <ul>
-              <li>slow</li>
-              <li>lazy</li>
               <li>relaxed</li>
+              <li>slow</li>
+              <li>chill</li>
             </ul>
           </div>
         </div>
 
-        <div>
-          <button id="quokkabox" class="t5">Quokka</></button>
+        <div class="buttonarea">
+          <button id="quokkabox" class="t5">Quokka</button>
           <div class="descriptions">
             <ul>
               <li>happy</li>
@@ -52,8 +55,8 @@
           </div>
         </div>
 
-        <div>
-          <button id="cheetahbox" class="t5">Cheetah</></button>
+        <div class="buttonarea">
+          <button id="cheetahbox" class="t5">Cheetah</button>
           <div class="descriptions">
             <ul>
               <li>excited</li>
@@ -63,8 +66,8 @@
           </div>
         </div>
 
-        <div>
-        <button id="curiousbox" class="t5">Curious</></button>
+        <div class="buttonarea">
+        <button id="curiousbox" class="t5">Curious</button>
           <div class="descriptions">
             <ul>
               <li>open-minded</li>
@@ -76,7 +79,6 @@
 
       </div>
     </div>
-  </div>
 
   <script>
 
@@ -119,26 +121,26 @@
 
 
 
-    document.getElementById("slothbox").onclick = function() {
-      window.location.href = '/login';
-    };
-    // Button style
+    // Generate playlist 
 
-    // var c1 = randomColor({
-    //   luminosity: 'light'
-    // });
-    // var c2 = randomColor({
-    //   luminosity: 'light'
-    // });
-    // $("#slothbox").mouseenter(function() {
-    //   $(this).css("background", "red").css("background", "-webkit-linear-gradient(" + c1 + ", " + c2 + ")").css("background", "-o-linear-gradient(" + c1 + ", " + c2 + ")").css("background", "-moz-linear-gradient(" + c1 + ", " + c2 + ")").css(
-    //     "background",
-    //     " linear-gradient(" + c1 + ", " + c2 + ")");
-    // }).mouseleave(function() {
-    //   $(this).css("background", "inherit");
-    // });
+    document.getElementById("slothbox").onclick = function() {
+      window.location.href = '/sloth';
+    };
+
+    document.getElementById("quokkabox").onclick = function() {
+      window.location.href = '/quokka';
+    };
+
+    document.getElementById("cheetahbox").onclick = function() {
+      window.location.href = '/cheetah';
+    };
+
+    document.getElementById("curiousbox").onclick = function() {
+      window.location.href = '/curious';
+    };
+ 
   </script>
-  <!--<a href="/login">Login</a>-->
+
 </body>
 
 </html>
