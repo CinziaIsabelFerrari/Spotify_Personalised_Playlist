@@ -3,28 +3,28 @@ import uuid
 from os import makedirs, path, remove
 
 import spotipy
-from playlist_utils import get_random_tracks_from_random_artists, get_top_artists, generate_playlist
+
 from credentials import SECRET_KEY, CLI_ID, CLI_SEC, REDIRECT_URI
+from playlist_utils import MoooodyPlaylist, SLOTH_VALUES, QUOKKA_VALUES, CURIOUS_VALUES, CHEETAH_VALUES
 
 SCOPE = 'playlist-modify-private,playlist-modify-public,user-top-read'
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 
+MOOOODY_PLAYLIST_NAME = 'Embrace your mood and dance with it!'
+CACHES_FOLDER = './.spotify_caches/'
 
-caches_folder = './.spotify_caches/'
-if not path.exists(caches_folder):
-    makedirs(caches_folder)
-
+if not path.exists(CACHES_FOLDER):
+    makedirs(CACHES_FOLDER)
 
 def session_cache_path():
-    return caches_folder + session.get('uuid')
+    return CACHES_FOLDER + session.get('uuid')
 
 
 class UserData():
     def __init__(self):
         self.token = None
-        self.top_artists = None
         self.sp_oauth = None
         self.sp = None
 
@@ -38,25 +38,29 @@ class UserData():
         return self.sp_oauth
 
     def set_token_from_code(self, code):
-        self.token = self.sp_oauth.get_access_token(code)['access_token']
-
-    def preprocess_top_artists(self):
-        self.top_artists = get_top_artists(self.sp)
-
-    def get_random_seed_tracks(self):
-        return get_random_tracks_from_random_artists(self.sp, self.top_artists)
+        sp_auth = self.get_sp_oauth()
+        self.token = sp_auth.get_access_token(code)['access_token']
 
     def authenticate(self):
         self.sp = spotipy.Spotify(auth=user_data.token)
 
+    def get_authorize_url(self):
+        sp_oauth = user_data.get_sp_oauth()
+        return sp_oauth.get_authorize_url()
+
+    def clear(self):
+        self.token = None
+        self.sp_oauth = None
+        self.sp = None
+
 
 user_data = UserData()
+playlist = MoooodyPlaylist()
 
 
 @app.route("/sign_in")
 def sign_in():
-    sp_oauth = user_data.get_sp_oauth()
-    auth_url = sp_oauth.get_authorize_url()
+    auth_url = user_data.get_authorize_url()
     return redirect(auth_url)
 
 
@@ -65,57 +69,31 @@ def sign_out():
     try:
         remove(session_cache_path())
         session.clear()
+        user_data.clear()
+        playlist.clear()
     except OSError as e:
-        print (f'Error: {e.filename} - {e.strerror}.')
+        print(f'Error: {e.filename} - {e.strerror}.')
     return redirect('/')
 
 
 @app.route("/callback")
 def api_callback():
     code = request.args.get('code')
-    sp_oauth = user_data.get_sp_oauth()
     user_data.set_token_from_code(code)
     return redirect("start")
 
 
-@app.route('/sloth')
-def sloth():
-    val_min, val_max = 0, 0.3
-    ene_min, ene_max = 0, 0.3
-    tem_target = 100
+@app.route('/generate/<float:val_min>/<float:val_max>/<float:ene_min>/<float:ene_max>/<tem_target>')
+def generate(val_min, val_max, ene_min, ene_max, tem_target):
+    if tem_target == "null":
+        tem_target = None
 
-    seed_tracks = user_data.get_random_seed_tracks()
-    return generate_playlist(user_data.sp, seed_tracks, val_min, val_max, ene_min, ene_max, tem_target)
+    val = [val_min, val_max]
+    ene = [ene_min, ene_max]
 
-
-@app.route('/cheetah')
-def cheetah():
-    val_min, val_max = 0.7, 1.0
-    ene_min, ene_max = 0.7, 1.0
-    tem_target = 180
-
-    seed_tracks = user_data.get_random_seed_tracks()
-    return generate_playlist(user_data.sp, seed_tracks, val_min, val_max, ene_min, ene_max, tem_target)
-
-
-@app.route('/quokka')
-def quokka():
-    val_min, val_max = 0.4, 0.7
-    ene_min, ene_max = 0.4, 0.6
-    tem_target = 140
-
-    seed_tracks = user_data.get_random_seed_tracks()
-    return generate_playlist(user_data.sp, seed_tracks, val_min, val_max, ene_min, ene_max, tem_target)
-
-
-@app.route('/curious')
-def curious():
-    val_min, val_max = 0, 1.0
-    ene_min, ene_max = 0, 1.0
-    tem_target = None
-
-    seed_tracks = user_data.get_random_seed_tracks()
-    return generate_playlist(user_data.sp, seed_tracks, val_min, val_max, ene_min, ene_max, tem_target)
+    playlist.generate_playlist(val, ene, tem_target)
+    return f'Enjoy your playlist!' \
+        f'<a href="{playlist.url}" target="_blank">LINK</a>'
 
 
 @app.route("/start")
@@ -128,14 +106,17 @@ def start():
         return redirect('sign_in')
 
     user_data.authenticate()
-    user_data.preprocess_top_artists()
+
+    playlist.set_sp(user_data.sp)
+    playlist.preprocess_top_artists()
+    playlist.search_for_playlist()
 
     return f'<h2>Hi {user_data.sp.me()["display_name"]}, how do you feel today? ' \
         f'<small><a href="/sign_out">[sign out]<a/></small></h2>' \
-        f'<a href="/sloth">SLOTH</a> | ' \
-        f'<a href="/quokka">QUOKKA</a> | ' \
-        f'<a href="/cheetah">CHEETAH</a> | ' \
-        f'<a href="/curious">CURIOUS</a>' \
+        f'<a href="/generate/{SLOTH_VALUES}">SLOTH</a> | ' \
+        f'<a href="/generate/{QUOKKA_VALUES}">QUOKKA</a> | ' \
+        f'<a href="/generate/{CHEETAH_VALUES}">CHEETAH</a> | ' \
+        f'<a href="/generate/{CURIOUS_VALUES}">CURIOUS</a>' \
 
 
 @app.route("/index", methods=['GET', 'POST'])
