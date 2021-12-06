@@ -1,6 +1,7 @@
 from flask import Flask, redirect, request, session, render_template
 import uuid
 from os import makedirs, path, remove
+from os.path import exists
 
 import spotipy
 
@@ -35,7 +36,8 @@ class UserData():
                     cache_handler=cache_handler,
                     show_dialog=True)
         if not sp_oauth.validate_token(cache_handler.get_cached_token()):
-            remove(session_cache_path())
+            if exists(session_cache_path()):
+                remove(session_cache_path())
         else:
             self.token = cache_handler.get_cached_token()['access_token']
 
