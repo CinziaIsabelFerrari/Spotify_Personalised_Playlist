@@ -16,8 +16,8 @@
      <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100&display=swap" rel="stylesheet">
 
 
-     <link rel='stylesheet' href='stylesheets/style.css' />
-     <link rel="stylesheet" media="only screen and (max-device-width: 797px)" href="stylesheets/smaller.css">
+     <link rel='stylesheet' href="{{ url_for('static', filename='css/style.css') }}">
+     <link rel="stylesheet" media="only screen and (max-device-width: 797px)" href="{{ url_for('static', filename='css/smaller.css') }}">
 </head>
 
 <body>
@@ -42,13 +42,13 @@
               <li>chill</li>
             </ul>
           </div>
-          <div class="smalldescriptions">
+          <!-- <div class="smalldescriptions">
             <ul>
               <li>relaxed</li>
               <li>slow</li>
               <li>chill</li>
             </ul>
-          </div>
+          </div> -->
         </div>
 
         <div class="buttonarea">
@@ -128,24 +128,24 @@
 
 
 
-    // Generate playlist 
+    // Generate playlist
 
     document.getElementById("slothbox").onclick = function() {
-      window.location.href = '/sloth';
+      window.location.href = '/generate/sloth/';
     };
 
     document.getElementById("quokkabox").onclick = function() {
-      window.location.href = '/quokka';
+      window.location.href = '/generate/quokka/';
     };
 
     document.getElementById("cheetahbox").onclick = function() {
-      window.location.href = '/cheetah';
+      window.location.href = '/generate/cheetah/';
     };
 
     document.getElementById("curiousbox").onclick = function() {
-      window.location.href = '/curious';
+      window.location.href = '/generate/curious/';
     };
- 
+
   </script>
 
 </body>

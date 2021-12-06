@@ -6,14 +6,14 @@ body {
 }
 
 .page {
-  display: table; 
-  height:90%; 
-  width:90%; 
-  margin: 1em auto; 
+  display: table;
+  height:90%;
+  width:90%;
+  margin: 1em auto;
   overflow: hidden;
 }
 
-.smalldescriptions {
+/* .smalldescriptions {
   display:flex;
   align-items: end;
   justify-content: center;
@@ -26,7 +26,7 @@ body {
   opacity:1;
   transition: opacity 0.5s linear;
   text-align: right;
-}
+} */
 
 #startButton {
   border-radius: 45px;

@@ -5,7 +5,7 @@ from os import makedirs, path, remove
 import spotipy
 
 from credentials import SECRET_KEY, CLI_ID, CLI_SEC, REDIRECT_URI
-from playlist_utils import MoooodyPlaylist, SLOTH_VALUES, QUOKKA_VALUES, CURIOUS_VALUES, CHEETAH_VALUES
+from playlist_utils import MoooodyPlaylist
 
 SCOPE = 'playlist-modify-private,playlist-modify-public,user-top-read'
 
@@ -14,6 +14,7 @@ app.secret_key = SECRET_KEY
 
 MOOOODY_PLAYLIST_NAME = 'Embrace your mood and dance with it!'
 CACHES_FOLDER = './.spotify_caches/'
+
 
 if not path.exists(CACHES_FOLDER):
     makedirs(CACHES_FOLDER)
@@ -83,17 +84,36 @@ def api_callback():
     return redirect("start")
 
 
-@app.route('/generate/<float:val_min>/<float:val_max>/<float:ene_min>/<float:ene_max>/<tem_target>')
-def generate(val_min, val_max, ene_min, ene_max, tem_target):
-    if tem_target == "null":
-        tem_target = None
+@app.route('/generate/<title>/')
+def generate(title):
 
-    val = [val_min, val_max]
-    ene = [ene_min, ene_max]
+    if title == 'sloth':
+        val = [0.0, 0.3]
+        ene = [0.0, 0.3]
+        tem = 100
+        color = ["#0288d1", "#1a237e"]
 
-    playlist.generate_playlist(val, ene, tem_target)
-    return f'Enjoy your playlist!' \
-        f'<a href="{playlist.url}" target="_blank">LINK</a>'
+    if title == 'quokka':
+        val = [0.4, 0.7]
+        ene = [0.4, 0.6]
+        tem = 140
+        color = ["#ffd54f", "#ff9800"]
+
+    if title == 'cheetah':
+        val = [0.7, 1.0]
+        ene = [0.7, 1.0]
+        tem = 180
+        color = ["#cc0000", "#c51162"]
+
+    if title == 'curious':
+        val = [0.0, 1.0]
+        ene = [0.0, 1.0]
+        tem = None
+        color = ["#ab47bc", "#00c853"]
+
+    playlist.generate_playlist(val, ene, tem)
+    return render_template('gotolink.html', title = title.capitalize(), url = playlist.url,
+                            color = color)
 
 
 @app.route("/start")
@@ -111,12 +131,7 @@ def start():
     playlist.preprocess_top_artists()
     playlist.search_for_playlist()
 
-    return f'<h2>Hi {user_data.sp.me()["display_name"]}, how do you feel today? ' \
-        f'<small><a href="/sign_out">[sign out]<a/></small></h2>' \
-        f'<a href="/generate/{SLOTH_VALUES}">SLOTH</a> | ' \
-        f'<a href="/generate/{QUOKKA_VALUES}">QUOKKA</a> | ' \
-        f'<a href="/generate/{CHEETAH_VALUES}">CHEETAH</a> | ' \
-        f'<a href="/generate/{CURIOUS_VALUES}">CURIOUS</a>' \
+    return render_template('moodpage.html')
 
 
 @app.route("/index", methods=['GET', 'POST'])

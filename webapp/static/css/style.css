@@ -5,44 +5,34 @@ body {
   /* background-image: linear-gradient(to right, #4163a9 , #7d4fa3); */
 }
 
+.page {
+  display: table;
+  height: 100%;
+  width:100%;
+  margin: 15em auto;
+  overflow: hidden;
+}
+
+.home {
+  display: table-cell;
+  vertical-align: middle;
+  text-align:center;
+}
 /* Titles */
 
+a {
+  text-decoration: none;
+  color:#ffffff;
+}
 
-.t3 {
+.t1 {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
+  font-weight: 500;
   text-align: center;
-  font-size: 1em;
-  border: none;
+  margin-top: 20px;
   color: white;
-  padding: 0.4em 0.8em;
-  display: inline-block;
-  outline: none;
+  font-size: 0.8em;
   cursor: pointer;
-}
-
-.t3:hover {
-  outline: none;
-}
-
-.t4 {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 800;
-  text-align: center;
-  line-height: 100px;
-  margin-top: 5vh;
-  color: white;
-  font-size: 5em;
-}
-
-.t5 {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  text-align: center;
-  margin-top: 1vh;
-  margin-bottom: 5vh;
-  color: white;
-  font-size: 1.5em;
 }
 
 .t2 {
@@ -55,23 +45,62 @@ body {
   font-size: 2.5em;
 }
 
+.t3 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  text-align: center;
+  font-size: 1em;
+  border: none;
+  color: white;
+  padding: 0.4em 0.8em;
+  display: inline-block;
+  outline: none;
+}
+
+.t4 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  text-align: center;
+  line-height: 100px;
+  margin-top: 5vh;
+  color: white;
+  font-size: 4em;
+}
+
+.t5 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 1vh;
+  margin-bottom: 5vh;
+  color: white;
+  font-size: 1.6em;
+}
+
 
 /* need to work on smaller device under 797px */
 
 @media only screen and (max-device-width: 797px) {
-  /* For mobile phones: */
+  .t1 {
+    font-size: 0.8em;
+  }
+  .t2 {
+    font-size: 2em;
+    padding: 0.2em 0.5em;
+  }
   .t3 {
-    font-size: 5em;
+    font-size: 1em;
     padding: 0.2em 0.5em;
   }
   .t4 {
-    font-size: 5em;
+    font-size: 4em;
     margin-bottom: 0.5em;
   }
   .t5 {
     font-size: 2.5em;
     margin-bottom: 1em;
   }
+
 }
 
 #startButton {
@@ -79,6 +108,15 @@ body {
   padding: 20px;
   width: 200px;
   background-color: #1DB954;
+  cursor: pointer;
+}
+
+#LinkButton{
+  border-radius: 45px;
+  padding: 20px;
+  width: 200px;
+  background-color: #1DB954;
+  cursor: pointer;
 }
 
 .buttons {
@@ -103,6 +141,7 @@ body {
   margin: 10px;
   margin-top: 10px;
   background-color: inherit;
+  cursor: pointer;
  }
 
 #quokkabox {
@@ -113,6 +152,7 @@ body {
   margin: 10px;
   margin-top: 10px;
   background-color: inherit;
+  cursor: pointer;
 }
 
 #cheetahbox {
@@ -123,6 +163,7 @@ body {
   margin: 10px;
   margin-top: 10px;
   background-color: inherit;
+  cursor: pointer;
 }
 
 #curiousbox {
@@ -133,10 +174,17 @@ body {
   margin: 10px;
   margin-top: 10px;
   background-color: inherit;
+  cursor: pointer;
 }
 
+/* @media only screen and (min-width: 797px) {
+  .smalldescriptions {
+    opacity:0;
+    display: none;
+  }
+} */
+
 .descriptions {
-  display: none;
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   color: white;
@@ -147,6 +195,9 @@ body {
   float: inherit;
   position: absolute;
   min-width: 160px;
+  opacity:0;
+  transition: opacity 0.5s linear;
+  text-align: center;
 }
 
 ul {
@@ -156,21 +207,17 @@ ul {
 }
 
 button#slothbox:hover + div.descriptions {
-    display: block;
-    transition: opacity 300ms ease;
+  opacity:1;
 }
 
 button#quokkabox:hover + div.descriptions {
-    display: block;
-    transition: opacity 300ms ease;
+  opacity:1;
 }
 
 button#cheetahbox:hover + div.descriptions {
-    display: block;
-    transition: opacity 300ms ease;
+  opacity:1;
 }
 
 button#curiousbox:hover + div.descriptions {
-    display: block;
-    transition: opacity 300ms ease;
+  opacity:1;
 }
