@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	   <meta charset="utf-8">
+	   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+     <meta name="description" content="Moooody / A Spotify playlist generator based on your mood">
+     <meta name="keywords" content="Moooody / A Spotify playlist generator based on your mood">
+ 		 <title>Moooody</title>
+
+     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.5.2/randomColor.js"></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&family=Work+Sans:wght@100&display=swap" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100&display=swap" rel="stylesheet">
+
+
+     <link rel='stylesheet' href="css/style.css">
+     <link rel="stylesheet" media="only screen and (max-device-width: 797px)" href="css/smaller.css">
+</head>
+
+<body>
+  <script>
+    // Fade in on start
+    $(document).ready(function() {
+      $("body").hide().fadeIn(2000);
+    });
+  </script>
+
+    <div class="page">
+      <div class="t2">How do you feel today?</div>
+
+      <div class="boxes">
+
+        <div class="buttonarea">
+          <button id="slothbox" class="t5">Sloth</button>
+          <div class="descriptions">
+            <ul>
+              <li>relaxed</li>
+              <li>slow</li>
+              <li>chill</li>
+            </ul>
+          </div>
+          <!-- <div class="smalldescriptions">
+            <ul>
+              <li>relaxed</li>
+              <li>slow</li>
+              <li>chill</li>
+            </ul>
+          </div> -->
+        </div>
+
+        <div class="buttonarea">
+          <button id="quokkabox" class="t5">Quokka</button>
+          <div class="descriptions">
+            <ul>
+              <li>happy</li>
+              <li>positive</li>
+              <li>upbeat</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="buttonarea">
+          <button id="cheetahbox" class="t5">Cheetah</button>
+          <div class="descriptions">
+            <ul>
+              <li>excited</li>
+              <li>energetic</li>
+              <li>fast</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="buttonarea">
+        <button id="curiousbox" class="t5">Curious</button>
+          <div class="descriptions">
+            <ul>
+              <li>open-minded</li>
+              <li>indecided</li>
+              <li>flexible</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <br>
+      <br>
+      <br>
+    <a id="logout" href="/logout"><u>LOG OUT</u></a></div>
+    </div>
+
+  <script>
+
+
+    // change background color on hover
+
+    var button = document.getElementById('slothbox');
+      button.onmouseover = function(e) {
+      document.body.style.background = "linear-gradient(to right, #0288d1 , #1a237e)";
+      };
+      button.onmouseout = function(e) {
+      document.body.style.background = "#020202";
+      };
+
+
+    var button = document.getElementById('quokkabox');
+      button.onmouseover = function(e) {
+      document.body.style.background = "linear-gradient(to right, #ffd54f, #ff9800)";
+      };
+      button.onmouseout = function(e) {
+      document.body.style.background = "#020202";
+      };
+
+    var button = document.getElementById('cheetahbox');
+      button.onmouseover = function(e) {
+      document.body.style.background = "linear-gradient(to right, #cc0000 , #c51162)";
+      };
+      button.onmouseout = function(e) {
+      document.body.style.background = "#020202";
+      };
+
+
+    var button = document.getElementById('curiousbox');
+      button.onmouseover = function(e) {
+      document.body.style.background = "linear-gradient(to right, #ab47bc, #00c853)";
+      };
+      button.onmouseout = function(e) {
+      document.body.style.background = "#020202";
+      };
+
+
+
+    // Generate playlist
+
+    document.getElementById("slothbox").onclick = function() {
+      window.location.href = '/generate/sloth/';
+    };
+
+    document.getElementById("quokkabox").onclick = function() {
+      window.location.href = '/generate/quokka/';
+    };
+
+    document.getElementById("cheetahbox").onclick = function() {
+      window.location.href = '/generate/cheetah/';
+    };
+
+    document.getElementById("curiousbox").onclick = function() {
+      window.location.href = '/generate/curious/';
+    };
+
+  </script>
+
+</body>
+
+</html>
