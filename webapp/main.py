@@ -30,25 +30,16 @@ class UserData():
         self.sp = None
 
     def get_cached_token(self):
-        cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
-        sp_oauth = spotipy.oauth2.SpotifyOAuth(CLI_ID, CLI_SEC, REDIRECT_URI,
-                    scope=SCOPE,
-                    cache_handler=cache_handler,
-                    show_dialog=True)
-        if not sp_oauth.validate_token(cache_handler.get_cached_token()):
-            if exists(session_cache_path()):
+        if exists(session_cache_path()):
+            cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
+            sp_oauth = spotipy.oauth2.SpotifyOAuth(CLI_ID, CLI_SEC, REDIRECT_URI,
+                        scope=SCOPE,
+                        cache_handler=cache_handler,
+                        show_dialog=True)
+            if not sp_oauth.validate_token(cache_handler.get_cached_token()):
                 remove(session_cache_path())
-        else:
-            self.token = cache_handler.get_cached_token()['access_token']
-
-    def clear_expired_cache(self):
-        cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
-        sp_oauth = spotipy.oauth2.SpotifyOAuth(CLI_ID, CLI_SEC, REDIRECT_URI,
-                    scope=SCOPE,
-                    cache_handler=cache_handler,
-                    show_dialog=True)
-        if not sp_oauth.validate_token(cache_handler.get_cached_token()):
-            remove(session_cache_path())
+            else:
+                self.token = cache_handler.get_cached_token()['access_token']
 
     def get_sp_oauth(self):
         cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
