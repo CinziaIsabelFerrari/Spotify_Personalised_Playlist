@@ -1,32 +1,21 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #020202;
+  background-color: #16161a;
   /* background-image: linear-gradient(to right, #4163a9 , #7d4fa3); */
 }
 
-.page {
-  display: table;
-  height:90%;
-  width:90%;
-  margin: 1em auto;
-  overflow: hidden;
-}
-
-/* .smalldescriptions {
-  display:flex;
-  align-items: end;
-  justify-content: center;
+.descriptions {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   color: white;
-  font-size: 1em;
-  line-height: 2;
-  position: absolute;
+  margin-top: 0px;
+  margin-left: 30%;
+  float: inherit;
+  min-width: 160px;
   opacity:1;
   transition: opacity 0.5s linear;
-  text-align: right;
-} */
+}
 
 #startButton {
   border-radius: 45px;
@@ -112,21 +101,6 @@ body {
   background-image: linear-gradient(to right, #ab47bc, #00c853);
 }
 
-.descriptions {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  color: white;
-  font-size: 1.2em;
-  line-height: 2;
-  margin-top:20px;
-  margin-left: 10px;
-  float: inherit;
-  position: absolute;
-  min-width: 160px;
-  opacity:0;
-  transition: opacity 0.5s linear;
-  text-align: center;
-}
 
 ul {
   list-style-type: none;
@@ -134,18 +108,7 @@ ul {
   padding: 0;
 }
 
-button#slothbox:hover + div.descriptions {
-  opacity:1;
-}
-
-button#quokkabox:hover + div.descriptions {
-  opacity:1;
-}
-
-button#cheetahbox:hover + div.descriptions {
-  opacity:1;
-}
-
-button#curiousbox:hover + div.descriptions {
-  opacity:1;
+#logout {
+  font-size: 0.8em;
+  margin-top: 0px;
 }

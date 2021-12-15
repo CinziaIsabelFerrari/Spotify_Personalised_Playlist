@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #020202;
+  background-color: #16161a;
   /* background-image: linear-gradient(to right, #4163a9 , #7d4fa3); */
 }
 
@@ -9,8 +9,8 @@ body {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   color: white;
-  margin-top:20px;
-  margin-left: 10px;
+  margin-top: 0px;
+  margin-left: 30%;
   float: inherit;
   min-width: 160px;
   opacity:1;
@@ -106,4 +106,9 @@ ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+#logout {
+  font-size: 0.8em;
+  margin-top: 0px;
 }

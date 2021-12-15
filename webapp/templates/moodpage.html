@@ -16,8 +16,8 @@
      <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100&display=swap" rel="stylesheet">
 
 
-     <link rel='stylesheet' href="{{ url_for('static', filename='css/style.css') }}">
-     <link rel="stylesheet" media="only screen and (max-device-width: 797px)" href="{{ url_for('static', filename='css/smaller.css') }}">
+     <link rel='stylesheet' href="css/style.css">
+     <link rel="stylesheet" media="only screen and (max-device-width: 450px)" href="css/smaller.css">
 </head>
 
 <body>
@@ -28,7 +28,7 @@
     });
   </script>
 
-    <div class="page">
+    <div class="home">
       <div class="t2">How do you feel today?</div>
 
       <div class="boxes">
@@ -85,6 +85,10 @@
         </div>
 
       </div>
+      <br>
+      <br>
+      <br>
+    <a id="logout" href="/logout"><u>LOG OUT</u></a></div>
     </div>
 
   <script>

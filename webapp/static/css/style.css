@@ -5,18 +5,18 @@ body {
   /* background-image: linear-gradient(to right, #4163a9 , #7d4fa3); */
 }
 
-.page {
+.home {
   display: table;
   height: 100%;
-  width:100%;
+  width: 100%;
   margin: 15em auto;
   overflow: hidden;
 }
 
-.home {
+.page {
   display: table-cell;
   vertical-align: middle;
-  text-align:center;
+  text-align: center;
 }
 /* Titles */
 
@@ -77,32 +77,6 @@ a {
   font-size: 1.6em;
 }
 
-
-/* need to work on smaller device under 797px */
-
-@media only screen and (max-device-width: 797px) {
-  .t1 {
-    font-size: 0.8em;
-  }
-  .t2 {
-    font-size: 2em;
-    padding: 0.2em 0.5em;
-  }
-  .t3 {
-    font-size: 1em;
-    padding: 0.2em 0.5em;
-  }
-  .t4 {
-    font-size: 4em;
-    margin-bottom: 0.5em;
-  }
-  .t5 {
-    font-size: 2.5em;
-    margin-bottom: 1em;
-  }
-
-}
-
 #startButton {
   border-radius: 45px;
   padding: 20px;
@@ -116,6 +90,18 @@ a {
   padding: 20px;
   width: 200px;
   background-color: #1DB954;
+  cursor: pointer;
+}
+
+#logout {
+  margin-top: 130px;
+  display:flex;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  text-align: center;
+  color: white;
+  font-size: 0.8em;
   cursor: pointer;
 }
 
@@ -177,13 +163,6 @@ a {
   cursor: pointer;
 }
 
-/* @media only screen and (min-width: 797px) {
-  .smalldescriptions {
-    opacity:0;
-    display: none;
-  }
-} */
-
 .descriptions {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
@@ -220,4 +199,63 @@ button#cheetahbox:hover + div.descriptions {
 
 button#curiousbox:hover + div.descriptions {
   opacity:1;
+}
+
+/* smaller device under 450px */
+
+@media only screen and (max-device-width: 450px) {
+
+  body {
+    background-color: #16161a;
+  }
+  .t1 {
+    font-size: 0.8em;
+  }
+  .t2 {
+    font-size: 2em;
+    padding: 0.2em 0.5em;
+  }
+  .t3 {
+    font-size: 1em;
+    padding: 0.2em 0.5em;
+  }
+  .t4 {
+    font-size: 4em;
+  }
+  .t5 {
+    font-size: 1.4em;
+    margin-bottom: 1em;
+  }
+
+  #logout {
+    font-size: 0.8em;
+    margin-top: 0px;
+  }
+
+  .home {
+    display: table;
+    height: 80%;
+    width: 90%;
+    padding-top:4em;
+    margin: 1em auto;
+    overflow: hidden;
+  }
+  
+  .page {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    padding-top: 5em;
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+    line-height: 1.2em;
+    font-size: 0.7em;
+    /* text-transform: uppercase; */
+  }
+
 }
