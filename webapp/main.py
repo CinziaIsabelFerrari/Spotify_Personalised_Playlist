@@ -1,6 +1,7 @@
 from flask import Flask, redirect, request, session, render_template
 import uuid
 from os import makedirs, path, remove
+from os.path import exists
 
 import spotipy
 
@@ -15,9 +16,8 @@ app.secret_key = SECRET_KEY
 MOOOODY_PLAYLIST_NAME = 'Embrace your mood and dance with it!'
 CACHES_FOLDER = './.spotify_caches/'
 
-
 if not path.exists(CACHES_FOLDER):
-    makedirs(CACHES_FOLDER)
+        makedirs(CACHES_FOLDER)
 
 def session_cache_path():
     return CACHES_FOLDER + session.get('uuid')
@@ -29,6 +29,18 @@ class UserData():
         self.sp_oauth = None
         self.sp = None
 
+    def get_cached_token(self):
+        if exists(session_cache_path()):
+            cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
+            sp_oauth = spotipy.oauth2.SpotifyOAuth(CLI_ID, CLI_SEC, REDIRECT_URI,
+                        scope=SCOPE,
+                        cache_handler=cache_handler,
+                        show_dialog=True)
+            if not sp_oauth.validate_token(cache_handler.get_cached_token()):
+                remove(session_cache_path())
+            else:
+                self.token = cache_handler.get_cached_token()['access_token']
+
     def get_sp_oauth(self):
         cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
         if self.sp_oauth is None:
@@ -36,6 +48,7 @@ class UserData():
                     scope=SCOPE,
                     cache_handler=cache_handler,
                     show_dialog=True)
+
         return self.sp_oauth
 
     def set_token_from_code(self, code):
@@ -121,6 +134,8 @@ def start():
 
     if not session.get('uuid'):
         session['uuid'] = str(uuid.uuid4())
+
+    user_data.get_cached_token()
 
     if user_data.token is None:
         return redirect('sign_in')
