@@ -255,7 +255,6 @@ button#curiousbox:hover + div.descriptions {
     text-align: right;
     line-height: 1.2em;
     font-size: 0.7em;
-    /* text-transform: uppercase; */
   }
 
 }
@@ -266,7 +265,6 @@ button#curiousbox:hover + div.descriptions {
     padding: 0;
     max-width: 450px;
     background-color: #16161a;
-    /* background-image: linear-gradient(to right, #4163a9 , #7d4fa3); */
   }
   
   .descriptions {
@@ -289,8 +287,8 @@ button#curiousbox:hover + div.descriptions {
   }
   
   .boxes {
-    height: 90%;
-    flex-direction: column;
+    /* height: 90%; */
+    /* flex-direction: column; */
     display: flex;
     justify-content: center;
     align-items: center;
