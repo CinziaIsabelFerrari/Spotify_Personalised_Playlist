@@ -235,8 +235,8 @@ button#curiousbox:hover + div.descriptions {
   .home {
     display: table;
     height: 80%;
-    width: 90%;
-    padding-top:4em;
+    width: 92%;
+    /* padding-top:4em; */
     margin: 1em auto;
     overflow: hidden;
   }
@@ -264,6 +264,7 @@ button#curiousbox:hover + div.descriptions {
   body {
     margin: 0;
     padding: 0;
+    max-width: 450px;
     background-color: #16161a;
     /* background-image: linear-gradient(to right, #4163a9 , #7d4fa3); */
   }
@@ -274,8 +275,8 @@ button#curiousbox:hover + div.descriptions {
     color: white;
     margin-top: 0px;
     margin-left: 30%;
-    float: inherit;
-    min-width: 160px;
+    /* float: inherit;
+    min-width: 160px; */
     opacity:1;
     transition: opacity 0.5s linear;
   }
@@ -367,12 +368,28 @@ button#curiousbox:hover + div.descriptions {
   
   ul {
     list-style-type: none;
-    margin: 0;
+    margin: 10px;
     padding: 0;
   }
   
   #logout {
     font-size: 0.8em;
     margin-top: 0px;
+  }
+}
+
+@media only screen and (max-device-width: 300px) {
+
+  body {
+    max-width: 300px;
+  }
+  .descriptions {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: white;
+    margin-top: 0px;
+    margin-left: 20%;
+    opacity:1;
+    transition: opacity 0.5s linear;
   }
 }
