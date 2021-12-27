@@ -6,3 +6,4 @@ credentials.sh
 webapp/credentials.py
 .flask_session/
 .spotify_caches/
+**/.DS_Store
