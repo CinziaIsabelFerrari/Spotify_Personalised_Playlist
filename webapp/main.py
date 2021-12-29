@@ -4,69 +4,18 @@ from os import makedirs, path, remove
 
 import spotipy
 
-from credentials import SECRET_KEY, CLI_ID, CLI_SEC, REDIRECT_URI
 from playlist_utils import MoooodyPlaylist
+from data_utils import session_cache_path, UserData, CACHES_FOLDER
+from credentials import SECRET_KEY
 
-SCOPE = 'playlist-modify-private,playlist-modify-public,user-top-read'
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 
 MOOOODY_PLAYLIST_NAME = 'Embrace your mood and dance with it!'
-CACHES_FOLDER = './.spotify_caches/'
 
 if not path.exists(CACHES_FOLDER):
     makedirs(CACHES_FOLDER)
-
-
-def session_cache_path():
-    return CACHES_FOLDER + session.get('uuid')
-
-
-class UserData():
-    def __init__(self):
-        self.token = None
-        self.sp_oauth = None
-        self.sp = None
-
-    def get_cached_token(self):
-        if path.exists(session_cache_path()):
-            cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
-            sp_oauth = spotipy.oauth2.SpotifyOAuth(CLI_ID, CLI_SEC, REDIRECT_URI,
-                        scope=SCOPE,
-                        cache_handler=cache_handler,
-                        show_dialog=True)
-            if not sp_oauth.validate_token(cache_handler.get_cached_token()):
-                remove(session_cache_path())
-            else:
-                self.token = cache_handler.get_cached_token()['access_token']
-
-    def get_sp_oauth(self):
-        cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
-        if self.sp_oauth is None:
-            self.sp_oauth = spotipy.oauth2.SpotifyOAuth(CLI_ID, CLI_SEC, REDIRECT_URI,
-                    scope=SCOPE,
-                    cache_handler=cache_handler,
-                    show_dialog=True)
-
-        return self.sp_oauth
-
-    def set_token_from_code(self, code):
-        sp_auth = self.get_sp_oauth()
-        self.token = sp_auth.get_access_token(code)['access_token']
-
-    def authenticate(self):
-        self.sp = spotipy.Spotify(auth=user_data.token)
-
-    def get_authorize_url(self):
-        sp_oauth = user_data.get_sp_oauth()
-        return sp_oauth.get_authorize_url()
-
-    def clear(self):
-        self.token = None
-        self.sp_oauth = None
-        self.sp = None
-
 
 user_data = UserData()
 playlist = MoooodyPlaylist()
@@ -100,6 +49,9 @@ def api_callback():
 @app.route('/generate/<title>/')
 def generate(title):
 
+    if not playlist.ready_to_generate():
+        return redirect("/")
+
     if title == 'sloth':
         val = [0.0, 0.3]
         ene = [0.0, 0.3]
@@ -125,8 +77,8 @@ def generate(title):
         color = ["#ab47bc", "#00c853"]
 
     playlist.generate_playlist(val, ene, tem)
-    return render_template('gotolink.html', title = title.capitalize(), url = playlist.url,
-                            color = color)
+    return render_template('gotolink.html', title=title.capitalize(), url=playlist.url,
+                           color=color)
 
 
 @app.route("/start")

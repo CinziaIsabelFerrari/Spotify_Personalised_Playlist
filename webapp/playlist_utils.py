@@ -89,3 +89,9 @@ class MoooodyPlaylist():
         self.top_artists = None
         self.id = None
         self.url = None
+
+    def ready_to_generate(self):
+        if self.sp is None or self.top_artists is None:
+            return False
+        else:
+            return True
