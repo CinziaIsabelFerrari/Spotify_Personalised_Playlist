@@ -92,14 +92,22 @@ a {
 
 #LinkButton{
   border-radius: 45px;
-  padding: 20px;
-  width: 200px;
+  padding: 7px;
+  width: 255px;
   background-color: #1DB954;
   cursor: pointer;
 }
 
+p{
+  display:flex;
+  justify-content: flex-start;
+  margin-left: 27px;
+  align-items: center;
+  font-size: 1.2em;
+  }
+
 #logout {
-  margin-top: 130px;
+  margin-top: 190px;
   display:flex;
   justify-content: center;
   font-family: 'Montserrat', sans-serif;
@@ -217,6 +225,7 @@ button#curiousbox:hover + div.descriptions {
     font-size: 0.8em;
   }
   .t2 {
+    margin-top: 2vh;
     font-size: 2em;
     padding: 0.2em 0.5em;
   }
@@ -230,11 +239,6 @@ button#curiousbox:hover + div.descriptions {
   .t5 {
     font-size: 1.4em;
     margin-bottom: 1em;
-  }
-
-  #logout {
-    font-size: 0.8em;
-    margin-top: 0px;
   }
 
   .home {
@@ -290,6 +294,22 @@ button#curiousbox:hover + div.descriptions {
     width: 200px;
     background-color: #1DB954;
   }
+
+  #LinkButton{
+    border-radius: 45px;
+    padding: 0;
+    width: 200px;
+    background-color: #1DB954;
+    cursor: pointer;
+  }
+  
+  p{
+    display:flex;
+    justify-content: flex-start;
+    margin-left: 27px;
+    align-items: center;
+    font-size: 0.9em;
+    }
   
   .boxes {
     /* height: 90%; */
@@ -377,7 +397,7 @@ button#curiousbox:hover + div.descriptions {
   
   #logout {
     font-size: 0.8em;
-    margin-top: 0px;
+    margin-top: 15px;
   }
 }
 
