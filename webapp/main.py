@@ -19,6 +19,15 @@ user_data = UserData()
 playlist = MoooodyPlaylist()
 
 
+def clear_all_data():
+    try:
+        remove(session_cache_path())
+        session.clear()
+        user_data.clear()
+        playlist.clear()
+    except OSError as e:
+        print(f'Error: {e.filename} - {e.strerror}.')
+
 @app.route("/sign_in")
 def sign_in():
     auth_url = user_data.get_authorize_url()
@@ -27,13 +36,7 @@ def sign_in():
 
 @app.route('/sign_out')
 def sign_out():
-    try:
-        remove(session_cache_path())
-        session.clear()
-        user_data.clear()
-        playlist.clear()
-    except OSError as e:
-        print(f'Error: {e.filename} - {e.strerror}.')
+    clear_all_data()
     return redirect('/')
 
 
@@ -98,7 +101,11 @@ def start():
     user_data.authenticate()
 
     playlist.set_sp(user_data.sp)
-    playlist.preprocess_top_artists()
+    valid_process = playlist.preprocess_top_artists()
+    if not valid_process:
+        clear_all_data()
+        return render_template('moodpage.html')
+
     playlist.search_for_playlist()
 
     return render_template('moodpage.html')

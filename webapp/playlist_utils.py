@@ -24,6 +24,10 @@ class MoooodyPlaylist():
         artists_uris = list(dict.fromkeys(artists_uris)) # Remove duplicates
         self.top_artists = artists_uris
 
+        if not self.top_artists:
+            return False
+        else:
+            return True
 
     def search_for_playlist(self):
         if not self.sp:
