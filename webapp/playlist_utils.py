@@ -68,7 +68,7 @@ class MoooodyPlaylist():
 
         return self.id
 
-    def generate_playlist(self, val, ene, tem_target):
+    def generate_playlist(self, val, ene, tem_target, title):
         seed_tracks = self.get_random_seed_tracks()
 
         track_ids = []
@@ -83,6 +83,9 @@ class MoooodyPlaylist():
 
         track_ids = [i['id'] for i in recommended_songs['tracks']]
         self.sp.playlist_replace_items(self.get_playlist_id(), track_ids)
+        self.sp.playlist_change_details(
+            self.get_playlist_id(),
+            description=f"A {title.capitalize()} playlist created by CiPi at https://moooody.pythonanywhere.com/")
 
     def clear(self):
         self.sp = None

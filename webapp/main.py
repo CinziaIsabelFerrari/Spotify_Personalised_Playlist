@@ -2,8 +2,6 @@ from flask import Flask, redirect, request, session, render_template
 import uuid
 from os import makedirs, path, remove
 
-import spotipy
-
 from playlist_utils import MoooodyPlaylist
 from data_utils import session_cache_path, UserData, CACHES_FOLDER
 from credentials import SECRET_KEY
@@ -42,8 +40,13 @@ def sign_out():
 @app.route("/callback")
 def api_callback():
     code = request.args.get('code')
-    user_data.set_token_from_code(code)
-    return redirect("start")
+
+    if code:
+        user_data.set_token_from_code(code)
+        return redirect("start")
+
+    else:
+        return redirect("/")
 
 
 @app.route('/generate/<title>/')
@@ -76,7 +79,7 @@ def generate(title):
         tem = None
         color = ["#ab47bc", "#00c853"]
 
-    playlist.generate_playlist(val, ene, tem)
+    playlist.generate_playlist(val, ene, tem, title)
     return render_template('gotolink.html', title=title.capitalize(), url=playlist.url,
                            color=color)
 
