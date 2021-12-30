@@ -22,12 +22,14 @@ playlist = MoooodyPlaylist()
 
 def clear_all_data():
     try:
-        session.clear()
-        user_data.clear()
-        playlist.clear()
         remove(session_cache_path())
+        print('--- REMOVED CACHE')
     except OSError as e:
-        print(f'Error: {e.filename} - {e.strerror}.')
+        pass
+
+    session.clear()
+    user_data.clear()
+    playlist.clear()
 
 @app.route("/sign_in")
 def sign_in():
@@ -91,7 +93,7 @@ def generate(title):
 @app.route("/start")
 def start():
 
-    if not session.get('uuid'):
+    if session.get('uuid') is None:
         session['uuid'] = str(uuid.uuid4())
 
     user_data.get_cached_token()
