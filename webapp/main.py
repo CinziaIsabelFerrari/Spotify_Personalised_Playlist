@@ -3,13 +3,14 @@ import uuid
 from os import makedirs, path, remove
 
 from playlist_utils import MoooodyPlaylist
-from data_utils import session_cache_path, UserData, CACHES_FOLDER
+from data_utils import session_cache_path, UserData
 from credentials import SECRET_KEY
 
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 
+CACHES_FOLDER = './.spotify_caches/'
 MOOOODY_PLAYLIST_NAME = 'Embrace your mood and dance with it!'
 
 if not path.exists(CACHES_FOLDER):
@@ -21,10 +22,10 @@ playlist = MoooodyPlaylist()
 
 def clear_all_data():
     try:
-        remove(session_cache_path())
         session.clear()
         user_data.clear()
         playlist.clear()
+        remove(session_cache_path())
     except OSError as e:
         print(f'Error: {e.filename} - {e.strerror}.')
 
@@ -104,7 +105,7 @@ def start():
     valid_process = playlist.preprocess_top_artists()
     if not valid_process:
         clear_all_data()
-        return render_template('moodpage.html')
+        return render_template('denied.html')
 
     playlist.search_for_playlist()
 
