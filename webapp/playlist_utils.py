@@ -72,7 +72,28 @@ class MoooodyPlaylist():
 
         return self.id
 
-    def generate_playlist(self, val, ene, tem_target, title):
+    def generate_playlist(self, title):
+
+        if title == 'sloth':
+            val = [0.0, 0.3]
+            ene = [0.0, 0.3]
+            tem = 100
+
+        if title == 'quokka':
+            val = [0.4, 0.7]
+            ene = [0.4, 0.6]
+            tem = 140
+
+        if title == 'cheetah':
+            val = [0.7, 1.0]
+            ene = [0.7, 1.0]
+            tem = 180
+
+        if title == 'curious':
+            val = [0.0, 1.0]
+            ene = [0.0, 1.0]
+            tem = None
+
         seed_tracks = self.get_random_seed_tracks()
 
         track_ids = []
@@ -82,7 +103,7 @@ class MoooodyPlaylist():
             max_valence=val[1],
             min_energy=ene[0],
             max_energy=ene[1],
-            target_tempo=tem_target,
+            target_tempo=tem,
         )
 
         track_ids = [i['id'] for i in recommended_songs['tracks']]
@@ -90,12 +111,6 @@ class MoooodyPlaylist():
         self.sp.playlist_change_details(
             self.get_playlist_id(),
             description=f"A {title.capitalize()} playlist created by CiPi at https://moooody.pythonanywhere.com/")
-
-    def clear(self):
-        self.sp = None
-        self.top_artists = None
-        self.id = None
-        self.url = None
 
     def ready_to_generate(self):
         if self.sp is None or self.top_artists is None:
