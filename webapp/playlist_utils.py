@@ -1,5 +1,7 @@
+import logging
 import random
 
+logger = logging.getLogger(__name__)
 MOOOODY_PLAYLIST_NAME = 'Embrace your mood and dance with it!'
 
 
@@ -17,11 +19,13 @@ class MoooodyPlaylist():
         if not self.sp:
             raise ValueError()
 
-        artists_short = self.sp.current_user_top_artists(limit=100, time_range='short_term')['items']
-        artists_medium = self.sp.current_user_top_artists(limit=100, time_range='medium_term')['items']
+        artists_short = self.sp.current_user_top_artists(
+            limit=100, time_range='short_term')['items']
+        artists_medium = self.sp.current_user_top_artists(
+            limit=100, time_range='medium_term')['items']
         artists = artists_short + artists_medium
         artists_uris = [i['uri'] for i in artists]
-        artists_uris = list(dict.fromkeys(artists_uris)) # Remove duplicates
+        artists_uris = list(dict.fromkeys(artists_uris))  # Remove duplicates
         self.top_artists = artists_uris
 
         if not self.top_artists:
@@ -61,8 +65,8 @@ class MoooodyPlaylist():
 
     def create_new_playlist(self):
         p = self.sp.user_playlist_create(self.sp.me()['id'],
-                                                    MOOOODY_PLAYLIST_NAME,
-                                                    public=True)
+                                         MOOOODY_PLAYLIST_NAME,
+                                         public=True)
         self.id = p['id']
         self.url = p['external_urls']['spotify']
 
@@ -94,8 +98,10 @@ class MoooodyPlaylist():
             ene = [0.0, 1.0]
             tem = None
 
+        logger.info('Seeking seed tracks')
         seed_tracks = self.get_random_seed_tracks()
 
+        logger.info('Requesting recommendations')
         track_ids = []
         recommended_songs = self.sp.recommendations(
             seed_tracks=seed_tracks,
@@ -106,11 +112,14 @@ class MoooodyPlaylist():
             target_tempo=tem,
         )
 
+        logger.info('Updating playlist')
         track_ids = [i['id'] for i in recommended_songs['tracks']]
         self.sp.playlist_replace_items(self.get_playlist_id(), track_ids)
         self.sp.playlist_change_details(
             self.get_playlist_id(),
             description=f"A {title.capitalize()} playlist created by CiPi at https://moooody.pythonanywhere.com/")
+
+        logger.info('Playlist generation done')
 
     def ready_to_generate(self):
         if self.sp is None or self.top_artists is None:

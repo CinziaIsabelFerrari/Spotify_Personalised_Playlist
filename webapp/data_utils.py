@@ -10,10 +10,7 @@ CACHES_FOLDER = './.spotify_caches/'
 SCOPE = 'playlist-modify-public,user-top-read'
 
 def session_cache_path():
-    path = CACHES_FOLDER + session.get('uuid')
-    logger.info('session_cache_path:')
-    logger.info(path)
-    return path
+    return CACHES_FOLDER + session.get('uuid')
 
 
 class UserData():
@@ -23,6 +20,9 @@ class UserData():
         self.sp = None
 
     def get_cached_token(self):
+        logger.info('Getting cached token')
+        logger.info(session_cache_path())
+        
         if path.exists(session_cache_path()):
             cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
             sp_oauth = spotipy.oauth2.SpotifyOAuth(CLI_ID, CLI_SEC, REDIRECT_URI,

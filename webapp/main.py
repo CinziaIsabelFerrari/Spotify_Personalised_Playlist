@@ -57,10 +57,12 @@ def api_callback():
 
 @app.route('/generate/<title>/')
 def generate(title):
+    logger.info('Playlist generation requested')
 
     if session.get('uuid') is None:
         redirect('start')
 
+    logger.info('User authentication')
     user_data = UserData()
     user_data.get_cached_token()
     user_data.authenticate()
@@ -68,18 +70,23 @@ def generate(title):
     playlist = MoooodyPlaylist()
     playlist.set_sp(user_data.sp)
 
+    logger.info('Preprocess top artists')
     valid_process = playlist.preprocess_top_artists()
 
     # Deny access if no artists are found (Freemium users)
     if not valid_process:
+        logger.info('Playlist generate denied, uuid:')
+        logger.info(session.get('uuid'))
         clear_all_data()
         return render_template('denied.html')
 
+    logger.info('Search for existing playlist')
     playlist.search_for_playlist()
 
     if not playlist.ready_to_generate():
         return redirect("/")
 
+    logger.info('Generate playlist')
     playlist.generate_playlist(title)
 
     if title == 'sloth':
@@ -103,6 +110,8 @@ def generate(title):
 
 @app.route("/start")
 def start():
+    logger.info('User started session')
+
     if session.get('uuid') is None:
         session['uuid'] = str(uuid.uuid4())
 
