@@ -1,11 +1,15 @@
-from flask import Flask, redirect, request, session, render_template
 import uuid
 from os import makedirs, path, remove
 
-from playlist_utils import MoooodyPlaylist
-from data_utils import session_cache_path, UserData
 from credentials import SECRET_KEY
+from data_utils import UserData, session_cache_path
+from flask import Flask, redirect, render_template, request, session
+from playlist_utils import MoooodyPlaylist
 
+import logging
+
+logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
@@ -94,13 +98,16 @@ def generate(title):
         raise ValueError('Invalid title')
 
     return render_template('gotolink.html', title=title.capitalize(),
-                            url=playlist.url, color=color)
+                           url=playlist.url, color=color)
 
 
 @app.route("/start")
 def start():
     if session.get('uuid') is None:
         session['uuid'] = str(uuid.uuid4())
+
+    logger.info('session uuid:')
+    logger.info(session.get('uuid'))
 
     user_data = UserData()
     user_data.get_cached_token()

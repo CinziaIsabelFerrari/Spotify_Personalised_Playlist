@@ -1,14 +1,19 @@
-from flask import session
+import logging
 from os import path, remove
+
 import spotipy
-
 from credentials import CLI_ID, CLI_SEC, REDIRECT_URI
+from flask import session
 
+logger = logging.getLogger(__name__)
 CACHES_FOLDER = './.spotify_caches/'
 SCOPE = 'playlist-modify-public,user-top-read'
 
 def session_cache_path():
-    return CACHES_FOLDER + session.get('uuid')
+    path = CACHES_FOLDER + session.get('uuid')
+    logger.info('session_cache_path:')
+    logger.info(path)
+    return path
 
 
 class UserData():
